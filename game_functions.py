@@ -1,10 +1,14 @@
 import sys
 import pygame
+from pygame.sprite import Group
 from time import sleep
 
 from bullet import FriendlyBullet, AlienBullet
 from alien import Alien
 
+def print_aliens(aliens):
+    for group in aliens:
+        print(group)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  Events  
@@ -66,7 +70,8 @@ def update_screen(ai_settings, stats, screen, sb, ship, aliens, bullets, play_bu
     # Draw the ship.
     ship.blitme()
     # Draw aliens.
-    aliens.draw(screen)
+    for groups in aliens:
+        groups.draw(screen)
     # Draw the score information.
     sb.show_score()
     # Draw the play button if the game is inactive.
@@ -90,10 +95,11 @@ def start_game(ai_settings, stats, screen, sb, ship, aliens, bullets):
     prep_images(sb)
 
     # Clear old, create a new fleet, center the ship.
-    create_fleet(ai_settings, screen, ship, aliens)
     ship.center_ship()
-    aliens.empty()
+    for group in aliens:
+        group.empty()
     bullets.empty()
+    create_fleet(ai_settings, screen, ship, aliens)
 
     # Activate the game, hide the mouse cursor.
     stats.game_active = True
@@ -229,9 +235,12 @@ def create_fleet(ai_settings, screen, ship, aliens):
     number_rows = get_number_rows(ai_settings, ship.rect.height, alien.rect.height)
     ai_settings.columns = number_columns
 
-    for row_number in range(number_rows):
-        for alien_number in range(number_columns):
-            create_alien(ai_settings, screen, aliens, alien_number, row_number)
+    for column_number in range(number_columns):
+        new_group = Group()
+        for row_number in range(number_rows):
+            create_alien(ai_settings, screen, new_group, column_number, row_number)
+        aliens.append(new_group)
+    return aliens
 
 def get_number_columns(ai_settings, alien_width):
     """Determine the number of aliens to fit the width."""
@@ -255,7 +264,7 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien.rect.x = alien.x
     alien.rect.y = (alien.rect.height + 2 * alien.rect.height * row_number +
             ai_settings.shim_top)
-    alien.column = alien_number
+    alien.row = row_number
     aliens.add(alien)
 
 def check_fleet_edges(ai_settings, aliens):
@@ -285,28 +294,31 @@ def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
     aliens in the fleet.
     """
     check_fleet_edges(ai_settings, aliens)
-    aliens.update()
+    for group in aliens:
+        group.update()
 
     # Get rid of aliens that are off screen, remove this code when the game
     # ends on reaching the rocket.
-    for alien in aliens.copy():
-        if alien.rect.top > ai_settings.screen_hight:
-            aliens.remove(alien)
+    for group in aliens:
+        for alien in group.copy():
+            if alien.rect.top > ai_settings.screen_hight:
+                aliens.remove(alien)
 
     check_alien_ship_collision(ai_settings, stats, screen, sb, ship, aliens, bullets)
     check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
 def define_frontline(aliens):
     """Define which aliens should fire back."""
-    check = set()
-    for alien in reversed(aliens.sprites):
-        if alien.column not in check:
-            check.add(alien.column)
-            alien.front_line = True
+    #TODO NOW sprite group empty.
+    for group in aliens:
+        alien_column = group.sprites()
+        alien = max(alien.row for alien in alien_column)
+        alien.front_line = True
 
 def generate_alien_fire(ai_settings, screen, aliens, bullets):
     """Generate frontline alien fire."""
-    for alien in aliens:
-        if alien.front_line:
-            fire_bullet_alien(ai_settings, screen, alien, bullets)
+    for groups in aliens:
+        for alien in groups:
+            if alien.front_line:
+                fire_bullet_alien(ai_settings, screen, alien, bullets)
 

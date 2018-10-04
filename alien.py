@@ -22,7 +22,7 @@ class Alien(Sprite):
         self.x = float(self.rect.x)
 
         # Is this alien on the front line?
-        self.column = 0
+        self.row = 0
         self.front_line = False
 
     def check_edges(self):
