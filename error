@@ -1,0 +1,21 @@
+ceback (most recent call last):
+  File "alien_invasion.py", line 48, in <module>
+    run_game()
+  File "alien_invasion.py", line 46, in run_game
+    gf.update_screen(ai_settings, stats, screen, sb, ship, alien_groups,
+bullets, play_button)
+  File
+"/home/iain/Projects/python/python_crash_course/II_projects/12_alien_invasion/game_functions.py",
+line 71, in update_screen
+    generate_alien_fire(ai_settings, screen, alien_groups, bullets)
+  File
+"/home/iain/Projects/python/python_crash_course/II_projects/12_alien_invasion/game_functions.py",
+line 358, in generate_alien_fire
+    if randint(0, ai_settings.alien_fire_rate) == 0:
+  File "/usr/lib/python3.5/random.py", line 227, in randint
+    return self.randrange(a, b+1)
+  File "/usr/lib/python3.5/random.py", line 200, in randrange
+    raise ValueError("non-integer stop for randrange()")
+ValueError: non-integer stop for randrange()
+
+shell returned 1

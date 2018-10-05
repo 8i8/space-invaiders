@@ -21,6 +21,13 @@ class Bullet(Sprite):
         self.colour = ai_settings.bullet_colour
         self.speed_factor = ai_settings.bullet_speed_factor
 
+    def update(self):
+        """Move the bullet."""
+        # Update the decimal position of the bullet.
+        self.y += self.speed_factor * self.direction
+        # Update the rect position.
+        self.rect.y = self.y
+
     def draw_bullet(self):
         """Draw the bullet to the screen."""
         pygame.draw.rect(self.screen, self.colour, self.rect)
@@ -37,12 +44,7 @@ class FriendlyBullet(Bullet):
         # Store the bullets position as a decimal value.
         self.y = float(self.rect.y)
 
-    def update(self):
-        """Move the bullet up the screen."""
-        # Update the decimal position of the bullet.
-        self.y -= self.speed_factor
-        # Update the rect position.
-        self.rect.y = self.y
+        self.direction = -1
 
 
 class AlienBullet(Bullet):
@@ -51,15 +53,11 @@ class AlienBullet(Bullet):
         super(AlienBullet, self).__init__(ai_settings, screen, alien)
         # Set the bullets starting position.
         self.rect.centerx = alien.rect.centerx
-        self.rect.bottom = alien.rect.bottom
+        self.rect.top = alien.rect.bottom
 
         # Store the bullets position as a decimal value.
         self.y = float(self.rect.y)
 
-    def update(self):
-        """Move the bullet down the screen."""
-        # Update the decimal position of the bullet.
-        self.y += self.speed_factor
-        # Update the rect position.
-        self.rect.y = self.y
+        self.direction = 1
+        self.colour = ai_settings.alien_bullet_colour
 
