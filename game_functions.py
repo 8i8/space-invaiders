@@ -180,20 +180,29 @@ def check_bullet_ship_collision(ai_settings, stats, screen, sb, ship,
             alien_fire.add(bullet)
 
     if pygame.sprite.spritecollideany(ship, alien_fire):
-        ship_hit(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
+        ship_hit_bullet(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
 
 def check_alien_ship_collision(ai_settings, stats, screen, sb, ship,
         alien_groups, bullets):
     """Check for alien and ship collision."""
     for alien_column in alien_groups:
         if pygame.sprite.spritecollideany(ship, alien_column):
-            ship_hit(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
+            ship_hit_alien(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  Ship
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def ship_hit(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
+def ship_hit_alien(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
+    """Respond to ship being hit by an alien."""
+    # Ship lost or game over.
+    stats.ships_left -= 1
+    if stats.ships_left:
+        ship_lost_new_fleet(ai_settings, screen, sb, ship, alien_groups, bullets)
+    else:
+        game_over(stats)
+
+def ship_hit_bullet(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
     """Respond to ship being hit by an alien."""
     # Ship lost or game over.
     stats.ships_left -= 1
@@ -202,14 +211,20 @@ def ship_hit(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
     else:
         game_over(stats)
 
-def ship_lost(ai_settings, screen, sb, ship, alien_groups, bullets):
-    """Ship lost on being hit."""
+def ship_lost_new_fleet(ai_settings, screen, sb, ship, alien_groups, bullets):
+    """Ship lost on being hit by an alien, create a new fleet."""
     sb.prep_ships()
     for alien_column in alien_groups:
         alien_column.empty()
     bullets.empty()
     create_fleet(ai_settings, screen, ship, alien_groups)
     ship.center_ship()
+    sleep(0.5)
+
+def ship_lost(ai_settings, screen, sb, ship, alien_groups, bullets):
+    """Ship lost on being hit by an alien, create a new fleet."""
+    sb.prep_ships()
+    bullets.empty()
     sleep(0.5)
 
 def game_over(stats):
