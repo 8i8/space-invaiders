@@ -24,7 +24,7 @@ class Ship(Sprite):
         # Movement flags
         self.moving_left = False
         self.moving_right = False
- 
+
     def update(self):
         """Update the ships position based on the movement flag."""
         if self.moving_left and self.rect.left > self.screen_rect.left:

@@ -1,0 +1,4478 @@
+cscope 15 /home/iain/Projects/python/python_crash_course/II_projects/01_alien_invasion/12_alien_invasion -c 0000026967
+	@./alien.py
+
+1 import 
+	~pygame
+
+2 from 
+	~pygame.sprite
+ import 
+Sprite
+
+5 class 
+	cAlien
+ ( 
+Sprite
+ ) :
+
+8 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ ) :
+
+9 
+	`super
+ ( 
+Alien
+ , 
+self
+ ) . 
+	`__init__
+ ( )
+
+10 
+self
+ . 
+	=screen
+ = 
+screen
+
+11 
+self
+ . 
+	=ai_settings
+ = 
+ai_settings
+
+14 
+self
+ . 
+	=image
+ = 
+pygame
+ . 
+image
+ . 
+	`load
+ ( 'images/alien.bmp' )
+
+15 
+self
+ . 
+	=rect
+ = 
+self
+ . 
+image
+ . 
+	`get_rect
+ ( )
+
+18 
+self
+ . 
+rect
+ . 
+	=x
+ = 
+self
+ . 
+rect
+ . 
+width
+
+19 
+self
+ . 
+rect
+ . 
+	=y
+ = 
+self
+ . 
+rect
+ . 
+height
+
+22 
+self
+ . 
+	=x
+ = 
+	`float
+ ( 
+self
+ . 
+rect
+ . 
+x
+ )
+
+25 
+self
+ . 
+	=row
+ = 0
+
+26 
+self
+ . 
+	=front_line
+ = False 
+	}
+
+28 def 
+	$check_edges
+ ( 
+self
+ ) :
+
+30 
+	=screen_rect
+ = 
+self
+ . 
+screen
+ . 
+	`get_rect
+ ( )
+
+31 if 
+self
+ . 
+rect
+ . 
+right
+ >= 
+screen_rect
+ . 
+right
+ :
+
+33 elif 
+self
+ . 
+rect
+ . 
+left
+ <= 0 :
+
+34 return True 
+	}
+
+36 def 
+	$update
+ ( 
+self
+ ) :
+
+38 
+self
+ . 
+	=x
+ += ( 
+self
+ . 
+ai_settings
+ . 
+alien_speed_factor
+ *
+
+39 
+self
+ . 
+ai_settings
+ . 
+fleet_direction
+ )
+
+40 
+self
+ . 
+rect
+ . 
+	=x
+ = 
+self
+ . 
+x
+ 
+	}
+
+
+	@./block.py
+
+
+	@./game_stats.py
+
+1 class 
+	cGameStats
+ ( ) :
+
+3 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ ) :
+
+5 
+self
+ . 
+	=ai_settings
+ = 
+ai_settings
+
+6 
+self
+ . 
+	`reset_stats
+ ( )
+
+7 
+self
+ . 
+	=score
+ = 0
+
+8 
+self
+ . 
+	=high_score
+ = 0
+
+11 
+self
+ . 
+	=game_active
+ = False
+
+14 
+self
+ . 
+	`read_high_score
+ ( ) 
+	}
+
+16 def 
+	$reset_stats
+ ( 
+self
+ ) :
+
+18 
+self
+ . 
+	=ships_left
+ = 
+self
+ . 
+ai_settings
+ . 
+ship_limit
+
+19 
+self
+ . 
+	=score
+ = 0
+
+20 
+self
+ . 
+	=level
+ = 1 
+	}
+
+22 def 
+	$write_high_score
+ ( 
+self
+ ) :
+
+24 with 
+	`open
+ ( '.highscore' , 'w' ) as 
+file_object
+ :
+
+25 
+file_object
+ . 
+	`write
+ ( 
+	`str
+ ( 
+self
+ . 
+high_score
+ ) ) 
+	}
+
+27 def 
+	$read_high_score
+ ( 
+self
+ ) :
+
+30 with 
+	`open
+ ( '.highscore' , 'r' ) as 
+file_object
+ :
+
+31 
+self
+ . 
+	=high_score
+ = 
+	`int
+ ( 
+file_object
+ . 
+	`read
+ ( ) )
+
+33 pass 
+	}
+
+
+	@./ship.py
+
+1 import 
+	~pygame
+
+2 from 
+	~pygame.sprite
+ import 
+Sprite
+
+4 class 
+	cShip
+ ( 
+Sprite
+ ) :
+
+6 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ ) :
+
+8 
+	`super
+ ( 
+Ship
+ , 
+self
+ ) . 
+	`__init__
+ ( )
+
+9 
+self
+ . 
+	=ai_settings
+ = 
+ai_settings
+
+10 
+self
+ . 
+	=screen
+ = 
+screen
+
+11 
+self
+ . 
+	=screen_rect
+ = 
+screen
+ . 
+	`get_rect
+ ( )
+
+14 
+self
+ . 
+	=image
+ = 
+pygame
+ . 
+image
+ . 
+	`load
+ ( 'images/ship.bmp' )
+
+15 
+self
+ . 
+	=rect
+ = 
+self
+ . 
+image
+ . 
+	`get_rect
+ ( )
+
+18 
+self
+ . 
+rect
+ . 
+	=centerx
+ = 
+self
+ . 
+screen_rect
+ . 
+centerx
+
+19 
+self
+ . 
+rect
+ . 
+	=bottom
+ = 
+self
+ . 
+screen_rect
+ . 
+bottom
+
+22 
+self
+ . 
+	=center
+ = 
+	`float
+ ( 
+self
+ . 
+rect
+ . 
+centerx
+ )
+
+25 
+self
+ . 
+	=moving_left
+ = False
+
+26 
+self
+ . 
+	=moving_right
+ = False 
+	}
+
+28 def 
+	$update
+ ( 
+self
+ ) :
+
+30 if 
+self
+ . 
+moving_left
+ and 
+self
+ . 
+rect
+ . 
+left
+ > 
+self
+ . 
+screen_rect
+ . 
+left
+ :
+
+31 
+self
+ . 
+	=center
+ -= 
+self
+ . 
+ai_settings
+ . 
+ship_speed_factor
+
+32 if 
+self
+ . 
+moving_right
+ and 
+self
+ . 
+rect
+ . 
+right
+ < 
+self
+ . 
+screen_rect
+ . 
+right
+ :
+
+33 
+self
+ . 
+	=center
+ += 
+self
+ . 
+ai_settings
+ . 
+ship_speed_factor
+
+36 
+self
+ . 
+rect
+ . 
+	=centerx
+ = 
+self
+ . 
+center
+ 
+	}
+
+38 def 
+	$blitme
+ ( 
+self
+ ) :
+
+40 
+self
+ . 
+screen
+ . 
+	`blit
+ ( 
+self
+ . 
+image
+ , 
+self
+ . 
+rect
+ ) 
+	}
+
+42 def 
+	$center_ship
+ ( 
+self
+ ) :
+
+44 
+self
+ . 
+	=center
+ = 
+self
+ . 
+screen_rect
+ . 
+centerx
+ 
+	}
+
+
+	@./bullet.py
+
+1 import 
+	~pygame
+
+2 from 
+	~pygame.sprite
+ import 
+Sprite
+
+5 class 
+	cBullet
+ ( 
+Sprite
+ ) :
+
+8 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ , 
+vehicule
+ ) :
+
+10 
+	`super
+ ( 
+Bullet
+ , 
+self
+ ) . 
+	`__init__
+ ( )
+
+11 
+self
+ . 
+	=screen
+ = 
+screen
+
+13 if 
+ai_settings
+ . 
+widebullets
+ == True :
+
+14 
+	=bullet_width
+ = 100 * 
+ai_settings
+ . 
+bullet_width
+
+16 
+	=bullet_width
+ = 
+ai_settings
+ . 
+bullet_width
+
+19 
+self
+ . 
+	=rect
+ = 
+pygame
+ . 
+	`Rect
+ ( 0 , 0 , 
+bullet_width
+ , 
+ai_settings
+ . 
+bullet_height
+ )
+
+21 
+self
+ . 
+	=colour
+ = 
+ai_settings
+ . 
+bullet_colour
+
+22 
+self
+ . 
+	=speed_factor
+ = 
+ai_settings
+ . 
+bullet_speed_factor
+ 
+	}
+
+24 def 
+	$update
+ ( 
+self
+ ) :
+
+27 
+self
+ . 
+	=y
+ += 
+self
+ . 
+speed_factor
+ * 
+self
+ . 
+direction
+
+29 
+self
+ . 
+rect
+ . 
+	=y
+ = 
+self
+ . 
+y
+ 
+	}
+
+31 def 
+	$draw_bullet
+ ( 
+self
+ ) :
+
+33 
+pygame
+ . 
+draw
+ . 
+	`rect
+ ( 
+self
+ . 
+screen
+ , 
+self
+ . 
+colour
+ , 
+self
+ . 
+rect
+ ) 
+	}
+
+36 class 
+	cFriendlyBullet
+ ( 
+Bullet
+ ) :
+
+38 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ , 
+ship
+ ) :
+
+39 
+	`super
+ ( 
+FriendlyBullet
+ , 
+self
+ ) . 
+	`__init__
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ )
+
+41 
+self
+ . 
+rect
+ . 
+	=centerx
+ = 
+ship
+ . 
+rect
+ . 
+centerx
+
+42 
+self
+ . 
+rect
+ . 
+	=top
+ = 
+ship
+ . 
+rect
+ . 
+top
+
+45 
+self
+ . 
+	=y
+ = 
+	`float
+ ( 
+self
+ . 
+rect
+ . 
+y
+ )
+
+47 
+self
+ . 
+	=direction
+ = - 1 
+	}
+
+50 class 
+	cAlienBullet
+ ( 
+Bullet
+ ) :
+
+52 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ , 
+alien
+ ) :
+
+53 
+	`super
+ ( 
+AlienBullet
+ , 
+self
+ ) . 
+	`__init__
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien
+ )
+
+55 
+self
+ . 
+rect
+ . 
+	=centerx
+ = 
+alien
+ . 
+rect
+ . 
+centerx
+
+56 
+self
+ . 
+rect
+ . 
+	=top
+ = 
+alien
+ . 
+rect
+ . 
+bottom
+
+59 
+self
+ . 
+	=y
+ = 
+	`float
+ ( 
+self
+ . 
+rect
+ . 
+y
+ )
+
+61 
+self
+ . 
+	=direction
+ = 1
+
+62 
+self
+ . 
+	=colour
+ = 
+ai_settings
+ . 
+alien_bullet_colour
+ 
+	}
+
+
+	@./defence.py
+
+1 class 
+	cDefence
+ ( ) :
+
+3 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ ) :
+
+4 
+self
+ . 
+	=settings
+ = 
+ai_settings
+
+5 
+self
+ . 
+	=screen
+ = 
+screen
+
+8 
+self
+ . 
+	=rect
+ = 
+pygame
+ . 
+	`Rect
+ ( 0 , 0 , 15 , 9 )
+
+10 
+self
+ . 
+	=colour
+ = ( 80 , 50 , 50 ) 
+	}
+
+
+	@./alien_invasion.py
+
+2 import 
+	~pdb
+
+3 import 
+	~pygame
+
+4 from 
+	~pygame.sprite
+ import 
+Group
+
+6 from 
+	~settings
+ import 
+Settings
+
+7 from 
+	~game_stats
+ import 
+GameStats
+
+8 from 
+	~scoreboard
+ import 
+Scoreboard
+
+9 from 
+	~button
+ import 
+Button
+
+10 from 
+	~ship
+ import 
+Ship
+
+11 from 
+	~alien
+ import 
+Alien
+
+13 import 
+	~game_functions
+ as 
+gf
+
+15 def 
+	$run_game
+ ( ) :
+
+17 
+pygame
+ . 
+	`init
+ ( )
+
+18 
+	=ai_settings
+ = 
+	`Settings
+ ( )
+
+19 
+	=screen
+ = 
+pygame
+ . 
+display
+ . 
+	`set_mode
+ (
+
+20 ( 
+ai_settings
+ . 
+screen_width
+ , 
+ai_settings
+ . 
+screen_hight
+ ) )
+
+21 
+pygame
+ . 
+display
+ . 
+	`set_caption
+ ( 'Alien Invasion' )
+
+24 
+	=play_button
+ = 
+	`Button
+ ( 
+ai_settings
+ , 
+screen
+ , 'Play' )
+
+25 
+	=stats
+ = 
+	`GameStats
+ ( 
+ai_settings
+ )
+
+26 
+	=sb
+ = 
+	`Scoreboard
+ ( 
+ai_settings
+ , 
+screen
+ , 
+stats
+ )
+
+29 
+	=ship
+ = 
+	`Ship
+ ( 
+ai_settings
+ , 
+screen
+ )
+
+30 
+	=bullets
+ = 
+	`Group
+ ( )
+
+31 
+	=alien_groups
+ = [ ]
+
+34 
+gf
+ . 
+	`initialise_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ )
+
+35 
+gf
+ . 
+	`create_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ )
+
+39 
+gf
+ . 
+	`check_events
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ , 
+play_button
+ )
+
+41 if 
+stats
+ . 
+game_active
+ :
+
+42 
+ship
+ . 
+	`update
+ ( )
+
+43 
+gf
+ . 
+	`update_bullets
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ )
+
+44 
+gf
+ . 
+	`update_aliens
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ )
+
+46 
+gf
+ . 
+	`update_screen
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ , 
+play_button
+ ) 
+	}
+
+48 
+	`run_game
+ ( )
+
+
+	@./game_functions.py
+
+1 import 
+	~sys
+
+2 import 
+	~pygame
+
+3 from 
+	~pygame.sprite
+ import 
+Group
+
+4 from 
+	~random
+ import 
+randint
+
+5 from 
+	~time
+ import 
+sleep
+
+7 from 
+	~bullet
+ import 
+FriendlyBullet
+ , 
+AlienBullet
+
+8 from 
+	~alien
+ import 
+Alien
+
+10 def 
+	$print_aliens
+ ( 
+aliens
+ ) :
+
+11 for 
+group
+ in 
+aliens
+ :
+
+12 print ( 
+group
+ ) 
+	}
+
+18 def 
+	$check_events
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ,
+
+19 
+play_button
+ ) :
+
+22 for 
+event
+ in 
+pygame
+ . 
+event
+ . 
+	`get
+ ( ) :
+
+23 if 
+event
+ . 
+type
+ == 
+pygame
+ . 
+QUIT
+ :
+
+24 
+sys
+ . 
+	`exit
+ ( )
+
+25 elif 
+event
+ . 
+type
+ == 
+pygame
+ . 
+KEYDOWN
+ :
+
+26 
+	`check_keydown_events
+ ( 
+event
+ , 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+27 
+alien_groups
+ , 
+bullets
+ )
+
+28 elif 
+event
+ . 
+type
+ == 
+pygame
+ . 
+KEYUP
+ :
+
+29 
+	`check_keyup_events
+ ( 
+event
+ , 
+ai_settings
+ , 
+ship
+ )
+
+30 elif 
+event
+ . 
+type
+ == 
+pygame
+ . 
+MOUSEBUTTONDOWN
+ :
+
+31 
+	=mouse_x
+ , 
+	=mouse_y
+ = 
+pygame
+ . 
+mouse
+ . 
+	`get_pos
+ ( )
+
+32 
+	`check_play_button
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+play_button
+ , 
+ship
+ ,
+
+33 
+alien_groups
+ , 
+bullets
+ , 
+mouse_x
+ , 
+mouse_y
+ ) 
+	}
+
+35 def 
+	$check_keydown_events
+ ( 
+event
+ , 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+36 
+alien_groups
+ , 
+bullets
+ ) :
+
+38 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_LEFT
+ :
+
+39 
+ship
+ . 
+	=moving_left
+ = True
+
+40 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_RIGHT
+ :
+
+41 
+ship
+ . 
+	=moving_right
+ = True
+
+42 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_SPACE
+ :
+
+43 
+	`fire_bullet_ship
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+bullets
+ )
+
+44 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_q
+ :
+
+45 
+sys
+ . 
+	`exit
+ ( )
+
+46 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_r
+ :
+
+47 
+ai_settings
+ . 
+	=rapidfire
+ = not 
+ai_settings
+ . 
+rapidfire
+
+48 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_e
+ :
+
+49 
+ai_settings
+ . 
+	=powerbullets
+ = not 
+ai_settings
+ . 
+powerbullets
+
+50 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_w
+ :
+
+51 
+ai_settings
+ . 
+	=widebullets
+ = not 
+ai_settings
+ . 
+widebullets
+
+52 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_p
+ :
+
+53 
+	`start_game
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+55 def 
+	$check_keyup_events
+ ( 
+event
+ , 
+ai_settings
+ , 
+ship
+ ) :
+
+57 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_LEFT
+ :
+
+58 
+ship
+ . 
+	=moving_left
+ = False
+
+59 if 
+event
+ . 
+key
+ == 
+pygame
+ . 
+K_RIGHT
+ :
+
+60 
+ship
+ . 
+	=moving_right
+ = False 
+	}
+
+66 def 
+	$update_screen
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ , 
+play_button
+ ) :
+
+69 
+screen
+ . 
+	`fill
+ ( 
+ai_settings
+ . 
+bg_colour
+ )
+
+71 for 
+bullet
+ in 
+bullets
+ . 
+	`sprites
+ ( ) :
+
+72 
+bullet
+ . 
+	`draw_bullet
+ ( )
+
+74 
+ship
+ . 
+	`blitme
+ ( )
+
+76 for 
+alien_column
+ in 
+alien_groups
+ :
+
+77 
+alien_column
+ . 
+	`draw
+ ( 
+screen
+ )
+
+79 
+sb
+ . 
+	`show_score
+ ( )
+
+81 if not 
+stats
+ . 
+game_active
+ :
+
+82 
+play_button
+ . 
+	`draw_button
+ ( )
+
+84 
+pygame
+ . 
+display
+ . 
+	`flip
+ ( ) 
+	}
+
+86 def 
+	$check_play_button
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+play_button
+ , 
+ship
+ ,
+
+87 
+alien_groups
+ , 
+bullets
+ , 
+mouse_x
+ , 
+mouse_y
+ ) :
+
+89 
+	=button_clicked
+ = 
+play_button
+ . 
+rect
+ . 
+	`collidepoint
+ ( 
+mouse_x
+ , 
+mouse_y
+ )
+
+90 if 
+button_clicked
+ and not 
+stats
+ . 
+game_active
+ :
+
+91 
+	`start_game
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+93 def 
+	$start_game
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+96 
+ai_settings
+ . 
+	`initialise_dynamic_settings
+ ( )
+
+97 
+stats
+ . 
+	`reset_stats
+ ( )
+
+98 
+	`prep_images
+ ( 
+sb
+ )
+
+101 for 
+alien_column
+ in 
+alien_groups
+ :
+
+102 
+alien_column
+ . 
+	`empty
+ ( )
+
+103 
+bullets
+ . 
+	`empty
+ ( )
+
+104 
+	`create_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ )
+
+105 
+ship
+ . 
+	`center_ship
+ ( )
+
+108 
+stats
+ . 
+	=game_active
+ = True
+
+109 
+pygame
+ . 
+mouse
+ . 
+	`set_visible
+ ( False ) 
+	}
+
+111 def 
+	$prep_images
+ ( 
+sb
+ ) :
+
+114 
+sb
+ . 
+	`prep_score
+ ( )
+
+115 
+sb
+ . 
+	`prep_high_score
+ ( )
+
+116 
+sb
+ . 
+	`prep_level
+ ( )
+
+117 
+sb
+ . 
+	`prep_ships
+ ( ) 
+	}
+
+119 def 
+	$check_high_score
+ ( 
+stats
+ , 
+sb
+ ) :
+
+121 if 
+stats
+ . 
+score
+ > 
+stats
+ . 
+high_score
+ :
+
+122 
+stats
+ . 
+	=high_score
+ = 
+stats
+ . 
+score
+
+123 
+sb
+ . 
+	`prep_high_score
+ ( )
+
+124 
+stats
+ . 
+	`write_high_score
+ ( ) 
+	}
+
+130 def 
+	$check_bullet_alien_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+131 
+alien_groups
+ , 
+bullets
+ ) :
+
+135 
+	=ships_fire
+ = 
+	`Group
+ ( )
+
+136 for 
+bullet
+ in 
+bullets
+ :
+
+137 if 
+bullet
+ . 
+direction
+ == - 1 :
+
+138 
+ships_fire
+ . 
+	`add
+ ( 
+bullet
+ )
+
+142 for 
+alien_column
+ in 
+alien_groups
+ :
+
+143 if 
+ai_settings
+ . 
+powerbullets
+ == True :
+
+144 
+	=collisions
+ = 
+pygame
+ . 
+sprite
+ . 
+	`groupcollide
+ ( 
+ships_fire
+ , 
+alien_column
+ , False , True )
+
+146 
+	=collisions
+ = 
+pygame
+ . 
+sprite
+ . 
+	`groupcollide
+ ( 
+ships_fire
+ , 
+alien_column
+ , True , True )
+
+148 if 
+collisions
+ :
+
+149 for 
+alien
+ in 
+collisions
+ . 
+	`values
+ ( ) :
+
+150 
+stats
+ . 
+	=score
+ += 
+ai_settings
+ . 
+alien_points
+ * 
+	`len
+ ( 
+alien_column
+ )
+
+151 
+sb
+ . 
+	`prep_score
+ ( )
+
+152 
+	`check_high_score
+ ( 
+stats
+ , 
+sb
+ )
+
+155 
+	`define_frontline
+ ( 
+alien_column
+ )
+
+158 
+	=count
+ = 0
+
+159 for 
+alien_column
+ in 
+alien_groups
+ :
+
+160 
+	=count
+ += 
+	`len
+ ( 
+alien_column
+ )
+
+161 if 
+count
+ == 0 :
+
+162 
+	`make_new_level
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+164 def 
+	$make_new_level
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+167 
+bullets
+ . 
+	`empty
+ ( )
+
+168 
+ai_settings
+ . 
+	`increase_speed
+ ( )
+
+169 
+stats
+ . 
+	=level
+ += 1
+
+170 
+sb
+ . 
+	`prep_level
+ ( )
+
+171 
+	`create_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ ) 
+	}
+
+173 def 
+	$check_bullet_ship_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+174 
+alien_groups
+ , 
+bullets
+ ) :
+
+177 
+	=alien_fire
+ = 
+	`Group
+ ( )
+
+178 for 
+bullet
+ in 
+bullets
+ :
+
+179 if 
+bullet
+ . 
+direction
+ == 1 :
+
+180 
+alien_fire
+ . 
+	`add
+ ( 
+bullet
+ )
+
+182 if 
+pygame
+ . 
+sprite
+ . 
+	`spritecollideany
+ ( 
+ship
+ , 
+alien_fire
+ ) :
+
+183 
+	`ship_hit_bullet
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+185 def 
+	$check_alien_ship_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+186 
+alien_groups
+ , 
+bullets
+ ) :
+
+188 for 
+alien_column
+ in 
+alien_groups
+ :
+
+189 if 
+pygame
+ . 
+sprite
+ . 
+	`spritecollideany
+ ( 
+ship
+ , 
+alien_column
+ ) :
+
+190 
+	`ship_hit_alien
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+196 def 
+	$ship_hit_alien
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+199 
+stats
+ . 
+	=ships_left
+ -= 1
+
+200 if 
+stats
+ . 
+ships_left
+ :
+
+201 
+	`ship_lost_new_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ )
+
+203 
+	`game_over
+ ( 
+stats
+ ) 
+	}
+
+205 def 
+	$ship_hit_bullet
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+208 
+stats
+ . 
+	=ships_left
+ -= 1
+
+209 if 
+stats
+ . 
+ships_left
+ :
+
+210 
+	`ship_lost
+ ( 
+ai_settings
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ )
+
+212 
+	`game_over
+ ( 
+stats
+ ) 
+	}
+
+214 def 
+	$ship_lost_new_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+216 
+sb
+ . 
+	`prep_ships
+ ( )
+
+217 for 
+alien_column
+ in 
+alien_groups
+ :
+
+218 
+alien_column
+ . 
+	`empty
+ ( )
+
+219 
+bullets
+ . 
+	`empty
+ ( )
+
+220 
+	`create_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ )
+
+221 
+ship
+ . 
+	`center_ship
+ ( )
+
+222 
+	`sleep
+ ( 0.5 ) 
+	}
+
+224 def 
+	$ship_lost
+ ( 
+ai_settings
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+226 
+sb
+ . 
+	`prep_ships
+ ( )
+
+227 
+bullets
+ . 
+	`empty
+ ( )
+
+228 
+	`sleep
+ ( 0.5 ) 
+	}
+
+230 def 
+	$game_over
+ ( 
+stats
+ ) :
+
+232 
+stats
+ . 
+	=game_active
+ = False
+
+233 
+pygame
+ . 
+mouse
+ . 
+	`set_visible
+ ( True ) 
+	}
+
+239 def 
+	$fire_bullet_ship
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+bullets
+ ) :
+
+243 if 
+ai_settings
+ . 
+rapidfire
+ == True :
+
+244 
+	=new_bullet
+ = 
+	`FriendlyBullet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ )
+
+245 
+bullets
+ . 
+	`add
+ ( 
+new_bullet
+ )
+
+248 
+	=bullet_count
+ = 0
+
+249 for 
+bullet
+ in 
+bullets
+ . 
+	`sprites
+ ( ) :
+
+250 if 
+bullet
+ . 
+direction
+ == - 1 :
+
+251 
+	=bullet_count
+ += 1
+
+253 if 
+bullet_count
+ < 
+ai_settings
+ . 
+bullets_allowd
+ :
+
+255 
+	=new_bullet
+ = 
+	`FriendlyBullet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ )
+
+256 
+bullets
+ . 
+	`add
+ ( 
+new_bullet
+ ) 
+	}
+
+259 def 
+	$fire_bullet_alien
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien
+ , 
+bullets
+ ) :
+
+261 
+	=new_bullet
+ = 
+	`AlienBullet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien
+ )
+
+262 
+bullets
+ . 
+	`add
+ ( 
+new_bullet
+ ) 
+	}
+
+264 def 
+	$update_bullets
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+267 
+bullets
+ . 
+	`update
+ ( )
+
+270 for 
+bullet
+ in 
+bullets
+ . 
+	`copy
+ ( ) :
+
+271 if 
+bullet
+ . 
+rect
+ . 
+bottom
+ <= 0 or 
+bullet
+ . 
+rect
+ . 
+top
+ >= 
+ai_settings
+ . 
+screen_hight
+ :
+
+272 
+bullets
+ . 
+	`remove
+ ( 
+bullet
+ )
+
+274 
+	`check_bullet_alien_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+275 
+alien_groups
+ , 
+bullets
+ )
+
+276 
+	`check_bullet_ship_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+277 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+283 def 
+	$initialise_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ ) :
+
+287 
+	=alien
+ = 
+	`Alien
+ ( 
+ai_settings
+ , 
+screen
+ )
+
+288 
+	=number_columns
+ = 
+	`get_number_columns
+ ( 
+ai_settings
+ , 
+alien
+ . 
+rect
+ . 
+width
+ )
+
+289 
+	=number_rows
+ = 
+	`get_number_rows
+ ( 
+ai_settings
+ , 
+ship
+ . 
+rect
+ . 
+height
+ , 
+alien
+ . 
+rect
+ . 
+height
+ )
+
+290 
+ai_settings
+ . 
+	=columns
+ = 
+number_columns
+
+291 
+ai_settings
+ . 
+	=rows
+ = 
+number_rows
+
+293 for 
+column_number
+ in 
+	`range
+ ( 
+number_columns
+ ) :
+
+294 
+	=new_group
+ = 
+	`Group
+ ( )
+
+295 
+alien_groups
+ . 
+	`append
+ ( 
+new_group
+ ) 
+	}
+
+297 def 
+	$create_fleet
+ ( 
+ai_settings
+ , 
+screen
+ , 
+ship
+ , 
+alien_groups
+ ) :
+
+301 
+	=number_columns
+ = 
+ai_settings
+ . 
+columns
+
+302 
+	=number_rows
+ = 
+ai_settings
+ . 
+rows
+
+305 for 
+column_number
+ , 
+alien_column
+ in 
+	`enumerate
+ ( 
+alien_groups
+ ) :
+
+306 for 
+row_number
+ in 
+	`range
+ ( 
+number_rows
+ ) :
+
+307 
+	`create_alien
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien_column
+ , 
+column_number
+ , 
+row_number
+ ) 
+	}
+
+309 def 
+	$get_number_columns
+ ( 
+ai_settings
+ , 
+alien_width
+ ) :
+
+311 
+	=available_space_x
+ = 
+ai_settings
+ . 
+screen_width
+ - 2 * 
+alien_width
+
+312 
+	=number_aliens_x
+ = 
+	`int
+ ( 
+available_space_x
+ / ( 2 * 
+alien_width
+ ) )
+
+313 return 
+number_aliens_x
+ 
+	}
+
+315 def 
+	$get_number_rows
+ ( 
+ai_settings
+ , 
+ship_hight
+ , 
+alien_height
+ ) :
+
+317 
+	=available_space_y
+ = (
+
+318 
+ai_settings
+ . 
+screen_hight
+ - ( 3 * 
+alien_height
+ ) - 
+ship_hight
+ )
+
+319 
+	=number_rows
+ = 
+	`int
+ ( 
+available_space_y
+ / ( 2 * 
+alien_height
+ ) ) / 2
+
+320 return 
+	`int
+ ( 
+number_rows
+ / 1 ) 
+	}
+
+322 def 
+	$create_alien
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien_column
+ , 
+alien_number
+ , 
+row_number
+ ) :
+
+324 
+	=alien
+ = 
+	`Alien
+ ( 
+ai_settings
+ , 
+screen
+ )
+
+325 
+	=alien_width
+ = 
+alien
+ . 
+rect
+ . 
+width
+
+326 
+alien
+ . 
+	=x
+ = ( 
+alien_width
+ + 2 * 
+alien_width
+ * 
+alien_number
+ +
+
+327 
+ai_settings
+ . 
+shim_h
+ )
+
+328 
+alien
+ . 
+rect
+ . 
+	=x
+ = 
+alien
+ . 
+x
+
+329 
+alien
+ . 
+rect
+ . 
+	=y
+ = ( 
+alien
+ . 
+rect
+ . 
+height
+ + 2 * 
+alien
+ . 
+rect
+ . 
+height
+ * 
+row_number
+ +
+
+330 
+ai_settings
+ . 
+shim_top
+ )
+
+332 
+alien
+ . 
+	=row
+ = 
+row_number
+
+333 
+alien_column
+ . 
+	`add
+ ( 
+alien
+ ) 
+	}
+
+335 def 
+	$check_fleet_edges
+ ( 
+ai_settings
+ , 
+alien_groups
+ ) :
+
+337 for 
+alien_column
+ in 
+alien_groups
+ :
+
+338 for 
+alien
+ in 
+alien_column
+ . 
+	`sprites
+ ( ) :
+
+339 if 
+alien
+ . 
+	`check_edges
+ ( ) :
+
+340 
+	`change_fleet_direction
+ ( 
+ai_settings
+ , 
+alien_groups
+ )
+
+341 break 
+	}
+
+343 def 
+	$change_fleet_direction
+ ( 
+ai_settings
+ , 
+alien_groups
+ ) :
+
+345 for 
+alien_column
+ in 
+alien_groups
+ :
+
+346 for 
+alien
+ in 
+alien_column
+ . 
+	`sprites
+ ( ) :
+
+347 
+alien
+ . 
+rect
+ . 
+	=y
+ += 
+ai_settings
+ . 
+fleet_drop_speed
+
+348 
+ai_settings
+ . 
+	=fleet_direction
+ *= - 1 
+	}
+
+350 def 
+	$check_aliens_bottom
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+352 
+	=screen_rect
+ = 
+screen
+ . 
+	`get_rect
+ ( )
+
+353 for 
+alien_column
+ in 
+alien_groups
+ :
+
+354 for 
+alien
+ in 
+alien_column
+ . 
+	`sprites
+ ( ) :
+
+355 if 
+alien
+ . 
+rect
+ . 
+bottom
+ >= 
+screen_rect
+ . 
+bottom
+ :
+
+357 
+	`ship_hit
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+359 def 
+	$update_aliens
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+365 for 
+alien_column
+ in 
+alien_groups
+ :
+
+366 
+alien_column
+ . 
+	`update
+ ( )
+
+368 
+	`check_fleet_edges
+ ( 
+ai_settings
+ , 
+alien_groups
+ )
+
+369 
+	`check_alien_ship_collision
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+370 
+alien_groups
+ , 
+bullets
+ )
+
+371 
+	`check_aliens_bottom
+ ( 
+ai_settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ , 
+alien_groups
+ , 
+bullets
+ )
+
+372 
+	`generate_alien_fire
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien_groups
+ , 
+bullets
+ ) 
+	}
+
+374 def 
+	$define_frontline
+ ( 
+alien_column
+ ) :
+
+376 if 
+	`len
+ ( 
+alien_column
+ ) :
+
+377 
+	=front_line
+ = 
+	`max
+ ( 
+alien
+ . 
+row
+ for 
+alien
+ in 
+alien_column
+ . 
+	`sprites
+ ( ) )
+
+378 for 
+alien
+ in 
+alien_column
+ . 
+	`sprites
+ ( ) :
+
+379 if 
+alien
+ . 
+row
+ == 
+front_line
+ :
+
+380 
+alien
+ . 
+	=front_line
+ = True 
+	}
+
+382 def 
+	$generate_alien_fire
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien_groups
+ , 
+bullets
+ ) :
+
+384 for 
+alien_column
+ in 
+alien_groups
+ :
+
+385 for 
+alien
+ in 
+alien_column
+ :
+
+386 if 
+alien
+ . 
+front_line
+ :
+
+387 if 
+	`randint
+ ( 0 , 
+ai_settings
+ . 
+alien_fire_rate
+ * 1000 ) == 0 :
+
+388 
+	`fire_bullet_alien
+ ( 
+ai_settings
+ , 
+screen
+ , 
+alien
+ , 
+bullets
+ ) 
+	}
+
+
+	@./scoreboard.py
+
+1 import 
+	~pygame.font
+
+2 from 
+	~pygame.sprite
+ import 
+Group
+
+4 from 
+	~ship
+ import 
+Ship
+
+7 class 
+	cScoreboard
+ ( ) :
+
+10 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ , 
+stats
+ ) :
+
+12 
+self
+ . 
+	=screen
+ = 
+screen
+
+13 
+self
+ . 
+	=screen_rect
+ = 
+screen
+ . 
+	`get_rect
+ ( )
+
+14 
+self
+ . 
+	=ai_settings
+ = 
+ai_settings
+
+15 
+self
+ . 
+	=stats
+ = 
+stats
+
+18 
+self
+ . 
+	=text_colour
+ = ( 30 , 30 , 30 )
+
+19 
+self
+ . 
+	=font
+ = 
+pygame
+ . 
+font
+ . 
+	`SysFont
+ ( None , 48 )
+
+22 
+self
+ . 
+	`prep_score
+ ( )
+
+23 
+self
+ . 
+	`prep_high_score
+ ( )
+
+24 
+self
+ . 
+	`prep_level
+ ( )
+
+25 
+self
+ . 
+	`prep_ships
+ ( ) 
+	}
+
+27 def 
+	$prep_score
+ ( 
+self
+ ) :
+
+29 
+	=rounded_score
+ = 
+	`int
+ ( 
+	`round
+ ( 
+self
+ . 
+stats
+ . 
+score
+ , - 1 ) )
+
+30 
+	=score_str
+ = "{:,}" . 
+	`format
+ ( 
+rounded_score
+ )
+
+31 
+self
+ . 
+	=score_image
+ = 
+self
+ . 
+font
+ . 
+	`render
+ ( 
+score_str
+ , True , 
+self
+ . 
+text_colour
+ ,
+
+32 
+self
+ . 
+ai_settings
+ . 
+bg_colour
+ )
+
+35 
+self
+ . 
+	=score_rect
+ = 
+self
+ . 
+score_image
+ . 
+	`get_rect
+ ( )
+
+36 
+self
+ . 
+score_rect
+ . 
+	=right
+ = 
+self
+ . 
+screen_rect
+ . 
+right
+ - 20
+
+37 
+self
+ . 
+score_rect
+ . 
+	=top
+ = 20 
+	}
+
+39 def 
+	$prep_high_score
+ ( 
+self
+ ) :
+
+41 
+	=high_score
+ = 
+	`int
+ ( 
+	`round
+ ( 
+self
+ . 
+stats
+ . 
+high_score
+ , - 1 ) )
+
+42 
+	=high_score_str
+ = "{:,}" . 
+	`format
+ ( 
+high_score
+ )
+
+43 
+self
+ . 
+	=high_score_image
+ = 
+self
+ . 
+font
+ . 
+	`render
+ ( 
+high_score_str
+ , True ,
+
+44 
+self
+ . 
+text_colour
+ , 
+self
+ . 
+ai_settings
+ . 
+bg_colour
+ )
+
+47 
+self
+ . 
+	=high_score_rect
+ = 
+self
+ . 
+high_score_image
+ . 
+	`get_rect
+ ( )
+
+48 
+self
+ . 
+high_score_rect
+ . 
+	=centerx
+ = 
+self
+ . 
+screen_rect
+ . 
+centerx
+
+49 
+self
+ . 
+high_score_rect
+ . 
+	=top
+ = 
+self
+ . 
+score_rect
+ . 
+top
+ 
+	}
+
+51 def 
+	$prep_level
+ ( 
+self
+ ) :
+
+53 
+self
+ . 
+	=level_image
+ = 
+self
+ . 
+font
+ . 
+	`render
+ ( 
+	`str
+ ( 
+self
+ . 
+stats
+ . 
+level
+ ) , True ,
+
+54 
+self
+ . 
+text_colour
+ , 
+self
+ . 
+ai_settings
+ . 
+bg_colour
+ )
+
+57 
+self
+ . 
+	=level_rect
+ = 
+self
+ . 
+level_image
+ . 
+	`get_rect
+ ( )
+
+58 
+self
+ . 
+level_rect
+ . 
+	=right
+ = 
+self
+ . 
+score_rect
+ . 
+right
+
+59 
+self
+ . 
+level_rect
+ . 
+	=top
+ = 
+self
+ . 
+score_rect
+ . 
+bottom
+ + 10 
+	}
+
+61 def 
+	$prep_ships
+ ( 
+self
+ ) :
+
+63 
+self
+ . 
+	=ships
+ = 
+	`Group
+ ( )
+
+64 for 
+ship_number
+ in 
+	`range
+ ( 
+self
+ . 
+stats
+ . 
+ships_left
+ ) :
+
+65 
+	=ship
+ = 
+	`Ship
+ ( 
+self
+ . 
+ai_settings
+ , 
+self
+ . 
+screen
+ )
+
+66 
+ship
+ . 
+rect
+ . 
+	=x
+ = 10 + 
+ship_number
+ * 
+ship
+ . 
+rect
+ . 
+width
+
+67 
+ship
+ . 
+rect
+ . 
+	=y
+ = 10
+
+68 
+self
+ . 
+ships
+ . 
+	`add
+ ( 
+ship
+ ) 
+	}
+
+70 def 
+	$show_score
+ ( 
+self
+ ) :
+
+72 
+self
+ . 
+screen
+ . 
+	`blit
+ ( 
+self
+ . 
+score_image
+ , 
+self
+ . 
+score_rect
+ )
+
+73 
+self
+ . 
+screen
+ . 
+	`blit
+ ( 
+self
+ . 
+high_score_image
+ , 
+self
+ . 
+high_score_rect
+ )
+
+74 
+self
+ . 
+screen
+ . 
+	`blit
+ ( 
+self
+ . 
+level_image
+ , 
+self
+ . 
+level_rect
+ )
+
+75 
+self
+ . 
+ships
+ . 
+	`draw
+ ( 
+self
+ . 
+screen
+ ) 
+	}
+
+
+	@./button.py
+
+1 import 
+	~pygame
+
+3 class 
+	cButton
+ ( ) :
+
+5 def 
+	$__init__
+ ( 
+self
+ , 
+ai_settings
+ , 
+screen
+ , 
+msg
+ ) :
+
+6 
+self
+ . 
+	=screen
+ = 
+screen
+
+7 
+self
+ . 
+	=screen_rect
+ = 
+screen
+ . 
+	`get_rect
+ ( )
+
+10 
+self
+ . 
+	=width
+ , 
+self
+ . 
+	=height
+ = 200 , 50
+
+11 
+self
+ . 
+	=button_colour
+ = 0 , 255 , 0
+
+12 
+self
+ . 
+	=text_colour
+ = 255 , 255 , 255
+
+13 
+self
+ . 
+	=font
+ = 
+pygame
+ . 
+font
+ . 
+	`SysFont
+ ( None , 48 )
+
+16 
+self
+ . 
+	=rect
+ = 
+pygame
+ . 
+	`Rect
+ ( 0 , 0 , 
+self
+ . 
+width
+ , 
+self
+ . 
+height
+ )
+
+17 
+self
+ . 
+rect
+ . 
+	=center
+ = 
+self
+ . 
+screen_rect
+ . 
+center
+
+20 
+self
+ . 
+	`prep_msg
+ ( 
+msg
+ ) 
+	}
+
+22 def 
+	$prep_msg
+ ( 
+self
+ , 
+msg
+ ) :
+
+24 
+self
+ . 
+	=msg_image
+ = 
+self
+ . 
+font
+ . 
+	`render
+ ( 
+msg
+ , True , 
+self
+ . 
+text_colour
+ ,
+
+25 
+self
+ . 
+button_colour
+ )
+
+26 
+self
+ . 
+	=msg_image_rect
+ = 
+self
+ . 
+msg_image
+ . 
+	`get_rect
+ ( )
+
+27 
+self
+ . 
+msg_image_rect
+ . 
+	=center
+ = 
+self
+ . 
+rect
+ . 
+center
+ 
+	}
+
+29 def 
+	$draw_button
+ ( 
+self
+ ) :
+
+31 
+self
+ . 
+screen
+ . 
+	`fill
+ ( 
+self
+ . 
+button_colour
+ , 
+self
+ . 
+rect
+ )
+
+32 
+self
+ . 
+screen
+ . 
+	`blit
+ ( 
+self
+ . 
+msg_image
+ , 
+self
+ . 
+msg_image_rect
+ ) 
+	}
+
+
+	@./settings.py
+
+1 import 
+	~pygame
+
+3 class 
+	cSettings
+ ( ) :
+
+6 def 
+	$__init__
+ ( 
+self
+ ) :
+
+10 
+self
+ . 
+	=screen_width
+ = 1200
+
+11 
+self
+ . 
+	=screen_hight
+ = 800
+
+12 
+self
+ . 
+	=bg_colour
+ = ( 230 , 230 , 230 )
+
+13 
+self
+ . 
+	=ship_speed_factor
+ = 5
+
+14 
+self
+ . 
+	=ship_limit
+ = 3
+
+15 
+self
+ . 
+	=columns
+ = 0
+
+16 
+self
+ . 
+	=rows
+ = 0
+
+19 
+self
+ . 
+	=shim_h
+ = 20
+
+20 
+self
+ . 
+	=shim_top
+ = 100
+
+23 
+self
+ . 
+	=bullet_speed_factor
+ = 2
+
+24 
+self
+ . 
+	=bullet_width
+ = 3
+
+25 
+self
+ . 
+	=bullet_height
+ = 15
+
+26 
+self
+ . 
+	=bullet_colour
+ = 60 , 200 , 120
+
+27 
+self
+ . 
+	=bullets_allowd
+ = 3
+
+28 
+self
+ . 
+	=rapidfire
+ = False
+
+29 
+self
+ . 
+	=powerbullets
+ = False
+
+30 
+self
+ . 
+	=widebullets
+ = False
+
+33 
+self
+ . 
+	=alien_bullet_colour
+ = 200 , 60 , 120
+
+34 
+self
+ . 
+	=alien_speed_factor
+ = 1
+
+35 
+self
+ . 
+	=fleet_drop_speed
+ = 10
+
+36 
+self
+ . 
+	=alien_fire_rate
+ = 2
+
+39 
+self
+ . 
+	=blockade_colour
+ = 200 , 60 , 120
+
+42 
+self
+ . 
+	=fleet_direction
+ = 1
+
+45 
+self
+ . 
+	=speedup_scale
+ = 1.1
+
+48 
+self
+ . 
+	=score_scale
+ = 1.5
+
+50 
+self
+ . 
+	`initialise_dynamic_settings
+ ( ) 
+	}
+
+52 def 
+	$initialise_dynamic_settings
+ ( 
+self
+ ) :
+
+54 
+self
+ . 
+	=ship_speed_factor
+ = 1.5
+
+55 
+self
+ . 
+	=bullet_speed_factor
+ = 3
+
+56 
+self
+ . 
+	=alien_speed_factor
+ = 1
+
+57 
+self
+ . 
+	=alien_points
+ = 50 
+	}
+
+59 def 
+	$increase_speed
+ ( 
+self
+ ) :
+
+61 
+self
+ . 
+	=ship_speed_factor
+ *= 
+self
+ . 
+speedup_scale
+
+62 
+self
+ . 
+	=bullet_speed_factor
+ *= 
+self
+ . 
+speedup_scale
+
+63 
+self
+ . 
+	=alien_speed_factor
+ *= 
+self
+ . 
+speedup_scale
+
+64 
+self
+ . 
+	=alien_fire_rate
+ = 
+	`int
+ ( 
+self
+ . 
+alien_fire_rate
+ * 
+self
+ . 
+speedup_scale
+ )
+
+65 
+self
+ . 
+	=alien_points
+ = 
+	`int
+ ( 
+self
+ . 
+alien_points
+ * 
+self
+ . 
+score_scale
+ ) 
+	}
+
+
+	@
+1
+.
+0
+11
+155
+./alien.py
+./block.py
+./game_stats.py
+./ship.py
+./bullet.py
+./defence.py
+./alien_invasion.py
+./game_functions.py
+./scoreboard.py
+./button.py
+./settings.py

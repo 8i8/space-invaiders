@@ -35,6 +35,11 @@ class Settings():
         self.fleet_drop_speed = 10
         self.alien_fire_rate = 2
 
+        # Blockade settings
+        self.blockade_colour = 200, 60, 120
+        self.block_width = 9
+        self.block_height = 15
+
         # fleet_direction of 1 represents right, -1 left.
         self.fleet_direction = 1
 

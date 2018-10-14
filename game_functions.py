@@ -12,7 +12,7 @@ def print_aliens(aliens):
         print(group)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  Events  
+#  Events
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def check_events(ai_settings, stats, screen, sb, ship, alien_groups, bullets,
@@ -60,7 +60,7 @@ def check_keyup_events(event, ai_settings, ship):
         ship.moving_right = False
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  Update 
+#  Update
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def update_screen(ai_settings, stats, screen, sb, ship, alien_groups, bullets, play_button):
@@ -124,7 +124,7 @@ def check_high_score(stats, sb):
         stats.write_high_score()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  Collisions  
+#  Collisions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def check_bullet_alien_collision(ai_settings, stats, screen, sb, ship,
@@ -150,7 +150,7 @@ def check_bullet_alien_collision(ai_settings, stats, screen, sb, ship,
                 stats.score += ai_settings.alien_points * len(alien_column)
                 sb.prep_score()
             check_high_score(stats, sb)
-    
+
         # Define the front line for alien fire.
         define_frontline(alien_column)
 
@@ -277,7 +277,7 @@ def update_bullets(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
             alien_groups, bullets)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  Aliens  
+#  Aliens
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 def initialise_fleet(ai_settings, screen, ship, alien_groups):
