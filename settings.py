@@ -1,3 +1,5 @@
+import pygame
+
 class Settings():
     """A class to store all of the settings for alien invasion."""
 
@@ -31,7 +33,7 @@ class Settings():
         self.alien_bullet_colour = 200, 60, 120
         self.alien_speed_factor = 1
         self.fleet_drop_speed = 10
-        self.alien_fire_rate = 1000
+        self.alien_fire_rate = 2
 
         # fleet_direction of 1 represents right, -1 left.
         self.fleet_direction = 1

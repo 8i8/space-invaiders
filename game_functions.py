@@ -68,7 +68,6 @@ def update_screen(ai_settings, stats, screen, sb, ship, alien_groups, bullets, p
     # Redraw the screen during each pass through the loop.
     screen.fill(ai_settings.bg_colour)
     # Draw bullets.
-    generate_alien_fire(ai_settings, screen, alien_groups, bullets)
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     # Draw the ship.
@@ -171,6 +170,18 @@ def make_new_level(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
     sb.prep_level()
     create_fleet(ai_settings, screen, ship, alien_groups)
 
+def check_bullet_ship_collision(ai_settings, stats, screen, sb, ship,
+        alien_groups, bullets):
+    """Check for collision between alien bullets and the ship."""
+
+    alien_fire = Group()
+    for bullet in bullets:
+        if bullet.direction == 1:
+            alien_fire.add(bullet)
+
+    if pygame.sprite.spritecollideany(ship, alien_fire):
+        ship_hit(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
+
 def check_alien_ship_collision(ai_settings, stats, screen, sb, ship,
         alien_groups, bullets):
     """Check for alien and ship collision."""
@@ -247,6 +258,8 @@ def update_bullets(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
 
     check_bullet_alien_collision(ai_settings, stats, screen, sb, ship,
             alien_groups, bullets)
+    check_bullet_ship_collision(ai_settings, stats, screen, sb, ship,
+            alien_groups, bullets)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  Aliens  
@@ -300,7 +313,7 @@ def create_alien(ai_settings, screen, alien_column, alien_number, row_number):
     alien.rect.x = alien.x
     alien.rect.y = (alien.rect.height + 2 * alien.rect.height * row_number +
             ai_settings.shim_top)
-    # Row number to designate the front line for enemy fire.
+    # Row number designates the front line of the enemy, for enemy fire.
     alien.row = row_number
     alien_column.add(alien)
 
@@ -341,6 +354,7 @@ def update_aliens(ai_settings, stats, screen, sb, ship, alien_groups, bullets):
     check_alien_ship_collision(ai_settings, stats, screen, sb, ship,
             alien_groups, bullets)
     check_aliens_bottom(ai_settings, stats, screen, sb, ship, alien_groups, bullets)
+    generate_alien_fire(ai_settings, screen, alien_groups, bullets)
 
 def define_frontline(alien_column):
     """Define which aliens should fire back."""
@@ -355,6 +369,6 @@ def generate_alien_fire(ai_settings, screen, alien_groups, bullets):
     for alien_column in alien_groups:
         for alien in alien_column:
             if alien.front_line:
-                if randint(0, ai_settings.alien_fire_rate) == 0:
+                if randint(0, ai_settings.alien_fire_rate * 1000) == 0:
                     fire_bullet_alien(ai_settings, screen, alien, bullets)
 
