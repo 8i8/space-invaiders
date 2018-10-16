@@ -2,7 +2,7 @@ import pygame
 
 class Button():
     """Button class to impliment the start button."""
-    def __init__(self, ai_settings, screen, msg):
+    def __init__(self, settings, screen, msg):
         self.screen = screen
         self.screen_rect = screen.get_rect()
 

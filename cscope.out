@@ -1,4 +1,4 @@
-cscope 15 /home/iain/Projects/python/python_crash_course/II_projects/01_alien_invasion/12_alien_invasion -c 0000026967
+cscope 15 /home/iain/Projects/python/python_crash_course/II_projects/01_alien_invasion/12_alien_invasion -c 0000029186
 	@./alien.py
 
 1 import 
@@ -20,7 +20,7 @@ Sprite
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  ) :
@@ -45,9 +45,9 @@ screen
 11 
 self
  . 
-	=ai_settings
+	=settings
  = 
-ai_settings
+settings
 
 14 
 self
@@ -178,7 +178,7 @@ self
  += ( 
 self
  . 
-ai_settings
+settings
  . 
 alien_speed_factor
  *
@@ -186,7 +186,7 @@ alien_speed_factor
 39 
 self
  . 
-ai_settings
+settings
  . 
 fleet_direction
  )
@@ -207,6 +207,134 @@ x
 
 	@./block.py
 
+1 import 
+	~pygame
+
+2 from 
+	~pygame.sprite
+ import 
+Sprite
+
+4 class 
+	cBlock
+ ( 
+Sprite
+ ) :
+
+6 def 
+	$__init__
+ ( 
+self
+ , 
+settings
+ , 
+screen
+ , 
+x
+ , 
+y
+ ) :
+
+7 
+	`super
+ ( 
+Block
+ , 
+self
+ ) . 
+	`__init__
+ ( )
+
+8 
+self
+ . 
+	=screen
+ = 
+screen
+
+9 
+self
+ . 
+	=settings
+ = 
+settings
+
+12 
+self
+ . 
+	=rect
+ = 
+pygame
+ . 
+	`Rect
+ ( 0 , 0 , 
+settings
+ . 
+block_width
+ ,
+
+13 
+settings
+ . 
+block_height
+ )
+
+14 
+self
+ . 
+rect
+ . 
+	=x
+ = 
+x
+
+15 
+self
+ . 
+rect
+ . 
+	=y
+ = 
+y
+
+16 
+self
+ . 
+	=colour
+ = 
+settings
+ . 
+blockade_colour
+ 
+	}
+
+18 def 
+	$draw_block
+ ( 
+self
+ ) :
+
+20 
+pygame
+ . 
+draw
+ . 
+	`rect
+ ( 
+self
+ . 
+screen
+ , 
+self
+ . 
+colour
+ , 
+self
+ . 
+rect
+ ) 
+	}
+
 
 	@./game_stats.py
 
@@ -219,15 +347,15 @@ x
  ( 
 self
  , 
-ai_settings
+settings
  ) :
 
 5 
 self
  . 
-	=ai_settings
+	=settings
  = 
-ai_settings
+settings
 
 6 
 self
@@ -273,7 +401,7 @@ self
  = 
 self
  . 
-ai_settings
+settings
  . 
 ship_limit
 
@@ -364,7 +492,7 @@ Sprite
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  ) :
@@ -382,9 +510,9 @@ self
 9 
 self
  . 
-	=ai_settings
+	=settings
  = 
-ai_settings
+settings
 
 10 
 self
@@ -511,7 +639,7 @@ self
  -= 
 self
  . 
-ai_settings
+settings
  . 
 ship_speed_factor
 
@@ -540,7 +668,7 @@ self
  += 
 self
  . 
-ai_settings
+settings
  . 
 ship_speed_factor
 
@@ -621,7 +749,7 @@ Sprite
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  , 
@@ -646,7 +774,7 @@ self
 screen
 
 13 if 
-ai_settings
+settings
  . 
 widebullets
  == True :
@@ -654,14 +782,14 @@ widebullets
 14 
 	=bullet_width
  = 100 * 
-ai_settings
+settings
  . 
 bullet_width
 
 16 
 	=bullet_width
  = 
-ai_settings
+settings
  . 
 bullet_width
 
@@ -676,7 +804,7 @@ pygame
  ( 0 , 0 , 
 bullet_width
  , 
-ai_settings
+settings
  . 
 bullet_height
  )
@@ -686,7 +814,7 @@ self
  . 
 	=colour
  = 
-ai_settings
+settings
  . 
 bullet_colour
 
@@ -695,7 +823,7 @@ self
  . 
 	=speed_factor
  = 
-ai_settings
+settings
  . 
 bullet_speed_factor
  
@@ -771,7 +899,7 @@ Bullet
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  , 
@@ -787,7 +915,7 @@ self
  ) . 
 	`__init__
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -852,7 +980,7 @@ Bullet
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  , 
@@ -868,7 +996,7 @@ self
  ) . 
 	`__init__
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -926,7 +1054,7 @@ self
  . 
 	=colour
  = 
-ai_settings
+settings
  . 
 alien_bullet_colour
  
@@ -944,7 +1072,7 @@ alien_bullet_colour
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  ) :
@@ -954,7 +1082,7 @@ self
  . 
 	=settings
  = 
-ai_settings
+settings
 
 5 
 self
@@ -983,69 +1111,66 @@ self
 
 	@./alien_invasion.py
 
-2 import 
-	~pdb
-
-3 import 
+1 import 
 	~pygame
 
-4 from 
+2 from 
 	~pygame.sprite
  import 
 Group
 
-6 from 
+4 from 
 	~settings
  import 
 Settings
 
-7 from 
+5 from 
 	~game_stats
  import 
 GameStats
 
-8 from 
+6 from 
 	~scoreboard
  import 
 Scoreboard
 
-9 from 
+7 from 
 	~button
  import 
 Button
 
-10 from 
+8 from 
 	~ship
  import 
 Ship
 
-11 from 
+9 from 
 	~alien
  import 
 Alien
 
-13 import 
+11 import 
 	~game_functions
  as 
 gf
 
-15 def 
+13 def 
 	$run_game
  ( ) :
 
-17 
+15 
 pygame
  . 
 	`init
  ( )
 
-18 
-	=ai_settings
+16 
+	=settings
  = 
 	`Settings
  ( )
 
-19 
+17 
 	=screen
  = 
 pygame
@@ -1055,17 +1180,17 @@ display
 	`set_mode
  (
 
-20 ( 
-ai_settings
+18 ( 
+settings
  . 
 screen_width
  , 
-ai_settings
+settings
  . 
-screen_hight
+screen_height
  ) )
 
-21 
+19 
 pygame
  . 
 display
@@ -1073,62 +1198,68 @@ display
 	`set_caption
  ( 'Alien Invasion' )
 
-24 
+22 
 	=play_button
  = 
 	`Button
  ( 
-ai_settings
+settings
  , 
 screen
  , 'Play' )
 
-25 
+23 
 	=stats
  = 
 	`GameStats
  ( 
-ai_settings
+settings
  )
 
-26 
+24 
 	=sb
  = 
 	`Scoreboard
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 stats
  )
 
-29 
+27 
 	=ship
  = 
 	`Ship
  ( 
-ai_settings
+settings
  , 
 screen
  )
 
-30 
+28 
 	=bullets
  = 
 	`Group
  ( )
 
-31 
+29 
+	=blockade
+ = 
+	`Group
+ ( )
+
+30 
 	=alien_groups
  = [ ]
 
-34 
+33 
 gf
  . 
 	`initialise_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -1137,12 +1268,12 @@ ship
 alien_groups
  )
 
-35 
+34 
 gf
  . 
 	`create_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -1151,12 +1282,12 @@ ship
 alien_groups
  )
 
-39 
+38 
 gf
  . 
 	`check_events
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1167,8 +1298,12 @@ sb
 ship
  , 
 alien_groups
- , 
+ ,
+
+39 
 bullets
+ , 
+blockade
  , 
 play_button
  )
@@ -1190,7 +1325,7 @@ gf
  . 
 	`update_bullets
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1203,6 +1338,8 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  )
 
 44 
@@ -1210,7 +1347,7 @@ gf
  . 
 	`update_aliens
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1223,6 +1360,8 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  )
 
 46 
@@ -1230,7 +1369,7 @@ gf
  . 
 	`update_screen
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1241,8 +1380,12 @@ sb
 ship
  , 
 alien_groups
- , 
+ ,
+
+47 
 bullets
+ , 
+blockade
  , 
 play_button
  ) 
@@ -1288,27 +1431,15 @@ AlienBullet
  import 
 Alien
 
-10 def 
-	$print_aliens
- ( 
-aliens
- ) :
+9 from 
+	~block
+ import 
+Block
 
-11 for 
-group
- in 
-aliens
- :
-
-12 print ( 
-group
- ) 
-	}
-
-18 def 
+15 def 
 	$check_events
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1323,11 +1454,13 @@ alien_groups
 bullets
  ,
 
-19 
+16 
+blockade
+ , 
 play_button
  ) :
 
-22 for 
+19 for 
 event
  in 
 pygame
@@ -1337,7 +1470,7 @@ event
 	`get
  ( ) :
 
-23 if 
+20 if 
 event
  . 
 type
@@ -1347,13 +1480,13 @@ pygame
 QUIT
  :
 
-24 
+21 
 sys
  . 
 	`exit
  ( )
 
-25 elif 
+22 elif 
 event
  . 
 type
@@ -1363,12 +1496,12 @@ pygame
 KEYDOWN
  :
 
-26 
+23 
 	`check_keydown_events
  ( 
 event
  , 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1379,13 +1512,15 @@ sb
 ship
  ,
 
-27 
+24 
 alien_groups
  , 
 bullets
+ , 
+blockade
  )
 
-28 elif 
+25 elif 
 event
  . 
 type
@@ -1395,17 +1530,17 @@ pygame
 KEYUP
  :
 
-29 
+26 
 	`check_keyup_events
  ( 
 event
  , 
-ai_settings
+settings
  , 
 ship
  )
 
-30 elif 
+27 elif 
 event
  . 
 type
@@ -1415,7 +1550,7 @@ pygame
 MOUSEBUTTONDOWN
  :
 
-31 
+28 
 	=mouse_x
  , 
 	=mouse_y
@@ -1427,10 +1562,10 @@ mouse
 	`get_pos
  ( )
 
-32 
+29 
 	`check_play_button
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1439,6 +1574,33 @@ screen
 sb
  , 
 play_button
+ , 
+ship
+ ,
+
+30 
+alien_groups
+ , 
+bullets
+ , 
+mouse_x
+ , 
+mouse_y
+ ) 
+	}
+
+32 def 
+	$check_keydown_events
+ ( 
+event
+ , 
+settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
  , 
 ship
  ,
@@ -1448,35 +1610,10 @@ alien_groups
  , 
 bullets
  , 
-mouse_x
- , 
-mouse_y
- ) 
-	}
-
-35 def 
-	$check_keydown_events
- ( 
-event
- , 
-ai_settings
- , 
-stats
- , 
-screen
- , 
-sb
- , 
-ship
- ,
-
-36 
-alien_groups
- , 
-bullets
+blockade
  ) :
 
-38 if 
+35 if 
 event
  . 
 key
@@ -1486,13 +1623,13 @@ pygame
 K_LEFT
  :
 
-39 
+36 
 ship
  . 
 	=moving_left
  = True
 
-40 if 
+37 if 
 event
  . 
 key
@@ -1502,13 +1639,13 @@ pygame
 K_RIGHT
  :
 
-41 
+38 
 ship
  . 
 	=moving_right
  = True
 
-42 if 
+39 if 
 event
  . 
 key
@@ -1518,10 +1655,10 @@ pygame
 K_SPACE
  :
 
-43 
+40 
 	`fire_bullet_ship
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -1530,7 +1667,7 @@ ship
 bullets
  )
 
-44 if 
+41 if 
 event
  . 
 key
@@ -1540,13 +1677,13 @@ pygame
 K_q
  :
 
-45 
+42 
 sys
  . 
 	`exit
  ( )
 
-46 if 
+43 if 
 event
  . 
 key
@@ -1556,16 +1693,16 @@ pygame
 K_r
  :
 
-47 
-ai_settings
+44 
+settings
  . 
 	=rapidfire
  = not 
-ai_settings
+settings
  . 
 rapidfire
 
-48 if 
+45 if 
 event
  . 
 key
@@ -1575,16 +1712,16 @@ pygame
 K_e
  :
 
-49 
-ai_settings
+46 
+settings
  . 
 	=powerbullets
  = not 
-ai_settings
+settings
  . 
 powerbullets
 
-50 if 
+47 if 
 event
  . 
 key
@@ -1594,16 +1731,16 @@ pygame
 K_w
  :
 
-51 
-ai_settings
+48 
+settings
  . 
 	=widebullets
  = not 
-ai_settings
+settings
  . 
 widebullets
 
-52 if 
+49 if 
 event
  . 
 key
@@ -1613,10 +1750,10 @@ pygame
 K_p
  :
 
-53 
+50 
 	`start_game
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1629,20 +1766,24 @@ ship
 alien_groups
  , 
 bullets
+ ,
+
+51 
+blockade
  ) 
 	}
 
-55 def 
+53 def 
 	$check_keyup_events
  ( 
 event
  , 
-ai_settings
+settings
  , 
 ship
  ) :
 
-57 if 
+55 if 
 event
  . 
 key
@@ -1652,13 +1793,13 @@ pygame
 K_LEFT
  :
 
-58 
+56 
 ship
  . 
 	=moving_left
  = False
 
-59 if 
+57 if 
 event
  . 
 key
@@ -1668,17 +1809,17 @@ pygame
 K_RIGHT
  :
 
-60 
+58 
 ship
  . 
 	=moving_right
  = False 
 	}
 
-66 def 
+64 def 
 	$update_screen
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1691,21 +1832,25 @@ ship
 alien_groups
  , 
 bullets
+ ,
+
+65 
+blockade
  , 
 play_button
  ) :
 
-69 
+68 
 screen
  . 
 	`fill
  ( 
-ai_settings
+settings
  . 
 bg_colour
  )
 
-71 for 
+70 for 
 bullet
  in 
 bullets
@@ -1713,25 +1858,25 @@ bullets
 	`sprites
  ( ) :
 
-72 
+71 
 bullet
  . 
 	`draw_bullet
  ( )
 
-74 
+73 
 ship
  . 
 	`blitme
  ( )
 
-76 for 
+75 for 
 alien_column
  in 
 alien_groups
  :
 
-77 
+76 
 alien_column
  . 
 	`draw
@@ -1739,25 +1884,37 @@ alien_column
 screen
  )
 
+78 for 
+block
+ in 
+blockade
+ :
+
 79 
+block
+ . 
+	`draw_block
+ ( )
+
+81 
 sb
  . 
 	`show_score
  ( )
 
-81 if not 
+83 if not 
 stats
  . 
 game_active
  :
 
-82 
+84 
 play_button
  . 
 	`draw_button
  ( )
 
-84 
+86 
 pygame
  . 
 display
@@ -1766,10 +1923,10 @@ display
  ( ) 
 	}
 
-86 def 
+88 def 
 	$check_play_button
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1782,17 +1939,19 @@ play_button
 ship
  ,
 
-87 
+89 
 alien_groups
  , 
 bullets
+ , 
+blockade
  , 
 mouse_x
  , 
 mouse_y
  ) :
 
-89 
+91 
 	=button_clicked
  = 
 play_button
@@ -1806,7 +1965,7 @@ mouse_x
 mouse_y
  )
 
-90 if 
+92 if 
 button_clicked
  and not 
 stats
@@ -1814,10 +1973,10 @@ stats
 game_active
  :
 
-91 
+93 
 	`start_game
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1830,13 +1989,17 @@ ship
 alien_groups
  , 
 bullets
+ ,
+
+94 
+blockade
  ) 
 	}
 
-93 def 
+96 def 
 	$start_game
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -1849,48 +2012,52 @@ ship
 alien_groups
  , 
 bullets
+ ,
+
+97 
+blockade
  ) :
 
-96 
-ai_settings
+100 
+settings
  . 
 	`initialise_dynamic_settings
  ( )
 
-97 
+101 
 stats
  . 
 	`reset_stats
  ( )
 
-98 
+102 
 	`prep_images
  ( 
 sb
  )
 
-101 for 
+105 for 
 alien_column
  in 
 alien_groups
  :
 
-102 
+106 
 alien_column
  . 
 	`empty
  ( )
 
-103 
+107 
 bullets
  . 
 	`empty
  ( )
 
-104 
+108 
 	`create_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -1899,19 +2066,29 @@ ship
 alien_groups
  )
 
-105 
+109 
+	`create_defence
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
+ )
+
+110 
 ship
  . 
 	`center_ship
  ( )
 
-108 
+113 
 stats
  . 
 	=game_active
  = True
 
-109 
+114 
 pygame
  . 
 mouse
@@ -1920,38 +2097,38 @@ mouse
  ( False ) 
 	}
 
-111 def 
+116 def 
 	$prep_images
  ( 
 sb
  ) :
 
-114 
+119 
 sb
  . 
 	`prep_score
  ( )
 
-115 
+120 
 sb
  . 
 	`prep_high_score
  ( )
 
-116 
+121 
 sb
  . 
 	`prep_level
  ( )
 
-117 
+122 
 sb
  . 
 	`prep_ships
  ( ) 
 	}
 
-119 def 
+124 def 
 	$check_high_score
  ( 
 stats
@@ -1959,7 +2136,7 @@ stats
 sb
  ) :
 
-121 if 
+126 if 
 stats
  . 
 score
@@ -1969,7 +2146,7 @@ stats
 high_score
  :
 
-122 
+127 
 stats
  . 
 	=high_score
@@ -1978,23 +2155,23 @@ stats
  . 
 score
 
-123 
+128 
 sb
  . 
 	`prep_high_score
  ( )
 
-124 
+129 
 stats
  . 
 	`write_high_score
  ( ) 
 	}
 
-130 def 
+135 def 
 	$check_bullet_alien_collision
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2005,31 +2182,33 @@ sb
 ship
  ,
 
-131 
+136 
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-135 
+140 
 	=ships_fire
  = 
 	`Group
  ( )
 
-136 for 
+141 for 
 bullet
  in 
 bullets
  :
 
-137 if 
+142 if 
 bullet
  . 
 direction
  == - 1 :
 
-138 
+143 
 ships_fire
  . 
 	`add
@@ -2037,19 +2216,19 @@ ships_fire
 bullet
  )
 
-142 for 
+147 for 
 alien_column
  in 
 alien_groups
  :
 
-143 if 
-ai_settings
+148 if 
+settings
  . 
 powerbullets
  == True :
 
-144 
+149 
 	=collisions
  = 
 pygame
@@ -2063,7 +2242,7 @@ ships_fire
 alien_column
  , False , True )
 
-146 
+151 
 	=collisions
  = 
 pygame
@@ -2077,11 +2256,11 @@ ships_fire
 alien_column
  , True , True )
 
-148 if 
+153 if 
 collisions
  :
 
-149 for 
+154 for 
 alien
  in 
 collisions
@@ -2089,12 +2268,12 @@ collisions
 	`values
  ( ) :
 
-150 
+155 
 stats
  . 
 	=score
  += 
-ai_settings
+settings
  . 
 alien_points
  * 
@@ -2103,13 +2282,13 @@ alien_points
 alien_column
  )
 
-151 
+156 
 sb
  . 
 	`prep_score
  ( )
 
-152 
+157 
 	`check_high_score
  ( 
 stats
@@ -2117,23 +2296,23 @@ stats
 sb
  )
 
-155 
+160 
 	`define_frontline
  ( 
 alien_column
  )
 
-158 
+163 
 	=count
  = 0
 
-159 for 
+164 for 
 alien_column
  in 
 alien_groups
  :
 
-160 
+165 
 	=count
  += 
 	`len
@@ -2141,14 +2320,14 @@ alien_groups
 alien_column
  )
 
-161 if 
+166 if 
 count
  == 0 :
 
-162 
+167 
 	`make_new_level
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2161,13 +2340,15 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) 
 	}
 
-164 def 
+169 def 
 	$make_new_level
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2180,49 +2361,61 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-167 
+172 
 bullets
  . 
 	`empty
  ( )
 
-168 
-ai_settings
+173 
+settings
  . 
 	`increase_speed
  ( )
 
-169 
+174 
 stats
  . 
 	=level
  += 1
 
-170 
+175 
 sb
  . 
 	`prep_level
  ( )
 
-171 
+176 
 	`create_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 ship
  , 
 alien_groups
+ )
+
+177 
+	`create_defence
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
  ) 
 	}
 
-173 def 
+179 def 
 	$check_bullet_ship_collision
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2233,31 +2426,31 @@ sb
 ship
  ,
 
-174 
+180 
 alien_groups
  , 
 bullets
  ) :
 
-177 
+183 
 	=alien_fire
  = 
 	`Group
  ( )
 
-178 for 
+184 for 
 bullet
  in 
 bullets
  :
 
-179 if 
+185 if 
 bullet
  . 
 direction
  == 1 :
 
-180 
+186 
 alien_fire
  . 
 	`add
@@ -2265,7 +2458,7 @@ alien_fire
 bullet
  )
 
-182 if 
+188 if 
 pygame
  . 
 sprite
@@ -2277,10 +2470,10 @@ ship
 alien_fire
  ) :
 
-183 
+189 
 	`ship_hit_bullet
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2296,10 +2489,10 @@ bullets
  ) 
 	}
 
-185 def 
+191 def 
 	$check_alien_ship_collision
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2310,19 +2503,21 @@ sb
 ship
  ,
 
-186 
+192 
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-188 for 
+194 for 
 alien_column
  in 
 alien_groups
  :
 
-189 if 
+195 if 
 pygame
  . 
 sprite
@@ -2334,10 +2529,10 @@ ship
 alien_column
  ) :
 
-190 
+196 
 	`ship_hit_alien
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2350,13 +2545,43 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) 
 	}
 
-196 def 
+198 def 
+	$check_bullet_blockade_collision
+ ( 
+bullets
+ , 
+blockade
+ ) :
+
+200 
+pygame
+ . 
+sprite
+ . 
+	`groupcollide
+ ( 
+bullets
+ , 
+blockade
+ , True , True ) 
+	}
+
+202 def 
+	$check_alien_blockade_collision
+ ( ) :
+
+204 pass 
+	}
+
+210 def 
 	$ship_hit_alien
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2369,24 +2594,26 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-199 
+213 
 stats
  . 
 	=ships_left
  -= 1
 
-200 if 
+214 if 
 stats
  . 
 ships_left
  :
 
-201 
+215 
 	`ship_lost_new_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2397,19 +2624,21 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  )
 
-203 
+217 
 	`game_over
  ( 
 stats
  ) 
 	}
 
-205 def 
+219 def 
 	$ship_hit_bullet
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2424,22 +2653,22 @@ alien_groups
 bullets
  ) :
 
-208 
+222 
 stats
  . 
 	=ships_left
  -= 1
 
-209 if 
+223 if 
 stats
  . 
 ships_left
  :
 
-210 
+224 
 	`ship_lost
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2452,17 +2681,17 @@ alien_groups
 bullets
  )
 
-212 
+226 
 	`game_over
  ( 
 stats
  ) 
 	}
 
-214 def 
+228 def 
 	$ship_lost_new_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2473,36 +2702,44 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-216 
+230 
 sb
  . 
 	`prep_ships
  ( )
 
-217 for 
+231 for 
 alien_column
  in 
 alien_groups
  :
 
-218 
+232 
 alien_column
  . 
 	`empty
  ( )
 
-219 
+233 
 bullets
  . 
 	`empty
  ( )
 
-220 
+234 
+blockade
+ . 
+	`empty
+ ( )
+
+235 
 	`create_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2511,21 +2748,31 @@ ship
 alien_groups
  )
 
-221 
+236 
+	`create_defence
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
+ )
+
+237 
 ship
  . 
 	`center_ship
  ( )
 
-222 
+238 
 	`sleep
  ( 0.5 ) 
 	}
 
-224 def 
+240 def 
 	$ship_lost
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2538,36 +2785,36 @@ alien_groups
 bullets
  ) :
 
-226 
+242 
 sb
  . 
 	`prep_ships
  ( )
 
-227 
+243 
 bullets
  . 
 	`empty
  ( )
 
-228 
+244 
 	`sleep
  ( 0.5 ) 
 	}
 
-230 def 
+246 def 
 	$game_over
  ( 
 stats
  ) :
 
-232 
+248 
 stats
  . 
 	=game_active
  = False
 
-233 
+249 
 pygame
  . 
 mouse
@@ -2576,10 +2823,10 @@ mouse
  ( True ) 
 	}
 
-239 def 
+255 def 
 	$fire_bullet_ship
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2588,25 +2835,25 @@ ship
 bullets
  ) :
 
-243 if 
-ai_settings
+259 if 
+settings
  . 
 rapidfire
  == True :
 
-244 
+260 
 	=new_bullet
  = 
 	`FriendlyBullet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 ship
  )
 
-245 
+261 
 bullets
  . 
 	`add
@@ -2614,11 +2861,11 @@ bullets
 new_bullet
  )
 
-248 
+264 
 	=bullet_count
  = 0
 
-249 for 
+265 for 
 bullet
  in 
 bullets
@@ -2626,37 +2873,37 @@ bullets
 	`sprites
  ( ) :
 
-250 if 
+266 if 
 bullet
  . 
 direction
  == - 1 :
 
-251 
+267 
 	=bullet_count
  += 1
 
-253 if 
+269 if 
 bullet_count
  < 
-ai_settings
+settings
  . 
 bullets_allowd
  :
 
-255 
+271 
 	=new_bullet
  = 
 	`FriendlyBullet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 ship
  )
 
-256 
+272 
 bullets
  . 
 	`add
@@ -2665,10 +2912,10 @@ new_bullet
  ) 
 	}
 
-259 def 
+275 def 
 	$fire_bullet_alien
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2677,19 +2924,19 @@ alien
 bullets
  ) :
 
-261 
+277 
 	=new_bullet
  = 
 	`AlienBullet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 alien
  )
 
-262 
+278 
 bullets
  . 
 	`add
@@ -2698,10 +2945,10 @@ new_bullet
  ) 
 	}
 
-264 def 
+280 def 
 	$update_bullets
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2714,15 +2961,17 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-267 
+283 
 bullets
  . 
 	`update
  ( )
 
-270 for 
+286 for 
 bullet
  in 
 bullets
@@ -2730,7 +2979,7 @@ bullets
 	`copy
  ( ) :
 
-271 if 
+287 if 
 bullet
  . 
 rect
@@ -2743,12 +2992,12 @@ rect
  . 
 top
  >= 
-ai_settings
+settings
  . 
-screen_hight
+screen_height
  :
 
-272 
+288 
 bullets
  . 
 	`remove
@@ -2756,10 +3005,10 @@ bullets
 bullet
  )
 
-274 
+290 
 	`check_bullet_alien_collision
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -2770,37 +3019,47 @@ sb
 ship
  ,
 
-275 
+291 
+alien_groups
+ , 
+bullets
+ , 
+blockade
+ )
+
+292 
+	`check_bullet_ship_collision
+ ( 
+settings
+ , 
+stats
+ , 
+screen
+ , 
+sb
+ , 
+ship
+ ,
+
+293 
 alien_groups
  , 
 bullets
  )
 
-276 
-	`check_bullet_ship_collision
+294 
+	`check_bullet_blockade_collision
  ( 
-ai_settings
- , 
-stats
- , 
-screen
- , 
-sb
- , 
-ship
- ,
-
-277 
-alien_groups
- , 
 bullets
+ , 
+blockade
  ) 
 	}
 
-283 def 
+300 def 
 	$initialise_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2809,22 +3068,22 @@ ship
 alien_groups
  ) :
 
-287 
+304 
 	=alien
  = 
 	`Alien
  ( 
-ai_settings
+settings
  , 
 screen
  )
 
-288 
+305 
 	=number_columns
  = 
 	`get_number_columns
  ( 
-ai_settings
+settings
  , 
 alien
  . 
@@ -2833,12 +3092,12 @@ rect
 width
  )
 
-289 
+306 
 	=number_rows
  = 
 	`get_number_rows
  ( 
-ai_settings
+settings
  , 
 ship
  . 
@@ -2853,21 +3112,21 @@ rect
 height
  )
 
-290 
-ai_settings
+307 
+settings
  . 
 	=columns
  = 
 number_columns
 
-291 
-ai_settings
+308 
+settings
  . 
 	=rows
  = 
 number_rows
 
-293 for 
+310 for 
 column_number
  in 
 	`range
@@ -2875,13 +3134,13 @@ column_number
 number_columns
  ) :
 
-294 
+311 
 	=new_group
  = 
 	`Group
  ( )
 
-295 
+312 
 alien_groups
  . 
 	`append
@@ -2890,10 +3149,10 @@ new_group
  ) 
 	}
 
-297 def 
+314 def 
 	$create_fleet
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2902,21 +3161,21 @@ ship
 alien_groups
  ) :
 
-301 
+318 
 	=number_columns
  = 
-ai_settings
+settings
  . 
 columns
 
-302 
+319 
 	=number_rows
  = 
-ai_settings
+settings
  . 
 rows
 
-305 for 
+322 for 
 column_number
  , 
 alien_column
@@ -2926,7 +3185,7 @@ alien_column
 alien_groups
  ) :
 
-306 for 
+323 for 
 row_number
  in 
 	`range
@@ -2934,10 +3193,10 @@ row_number
 number_rows
  ) :
 
-307 
+324 
 	`create_alien
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -2949,24 +3208,24 @@ row_number
  ) 
 	}
 
-309 def 
+326 def 
 	$get_number_columns
  ( 
-ai_settings
+settings
  , 
 alien_width
  ) :
 
-311 
+328 
 	=available_space_x
  = 
-ai_settings
+settings
  . 
 screen_width
  - 2 * 
 alien_width
 
-312 
+329 
 	=number_aliens_x
  = 
 	`int
@@ -2976,36 +3235,36 @@ available_space_x
 alien_width
  ) )
 
-313 return 
+330 return 
 number_aliens_x
  
 	}
 
-315 def 
+332 def 
 	$get_number_rows
  ( 
-ai_settings
+settings
  , 
-ship_hight
+ship_height
  , 
 alien_height
  ) :
 
-317 
+334 
 	=available_space_y
  = (
 
-318 
-ai_settings
+335 
+settings
  . 
-screen_hight
+screen_height
  - ( 3 * 
 alien_height
  ) - 
-ship_hight
+ship_height
  )
 
-319 
+336 
 	=number_rows
  = 
 	`int
@@ -3015,17 +3274,17 @@ available_space_y
 alien_height
  ) ) / 2
 
-320 return 
+337 return 
 	`int
  ( 
 number_rows
  / 1 ) 
 	}
 
-322 def 
+339 def 
 	$create_alien
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -3036,17 +3295,17 @@ alien_number
 row_number
  ) :
 
-324 
+341 
 	=alien
  = 
 	`Alien
  ( 
-ai_settings
+settings
  , 
 screen
  )
 
-325 
+342 
 	=alien_width
  = 
 alien
@@ -3055,7 +3314,7 @@ rect
  . 
 width
 
-326 
+343 
 alien
  . 
 	=x
@@ -3067,13 +3326,13 @@ alien_width
 alien_number
  +
 
-327 
-ai_settings
+344 
+settings
  . 
-shim_h
+shim_x
  )
 
-328 
+345 
 alien
  . 
 rect
@@ -3084,7 +3343,7 @@ alien
  . 
 x
 
-329 
+346 
 alien
  . 
 rect
@@ -3106,20 +3365,20 @@ height
 row_number
  +
 
-330 
-ai_settings
+347 
+settings
  . 
 shim_top
  )
 
-332 
+349 
 alien
  . 
 	=row
  = 
 row_number
 
-333 
+350 
 alien_column
  . 
 	`add
@@ -3128,21 +3387,21 @@ alien
  ) 
 	}
 
-335 def 
+352 def 
 	$check_fleet_edges
  ( 
-ai_settings
+settings
  , 
 alien_groups
  ) :
 
-337 for 
+354 for 
 alien_column
  in 
 alien_groups
  :
 
-338 for 
+355 for 
 alien
  in 
 alien_column
@@ -3150,38 +3409,38 @@ alien_column
 	`sprites
  ( ) :
 
-339 if 
+356 if 
 alien
  . 
 	`check_edges
  ( ) :
 
-340 
+357 
 	`change_fleet_direction
  ( 
-ai_settings
+settings
  , 
 alien_groups
  )
 
-341 break 
+358 break 
 	}
 
-343 def 
+360 def 
 	$change_fleet_direction
  ( 
-ai_settings
+settings
  , 
 alien_groups
  ) :
 
-345 for 
+362 for 
 alien_column
  in 
 alien_groups
  :
 
-346 for 
+363 for 
 alien
  in 
 alien_column
@@ -3189,28 +3448,28 @@ alien_column
 	`sprites
  ( ) :
 
-347 
+364 
 alien
  . 
 rect
  . 
 	=y
  += 
-ai_settings
+settings
  . 
 fleet_drop_speed
 
-348 
-ai_settings
+365 
+settings
  . 
 	=fleet_direction
  *= - 1 
 	}
 
-350 def 
+367 def 
 	$check_aliens_bottom
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -3225,7 +3484,7 @@ alien_groups
 bullets
  ) :
 
-352 
+369 
 	=screen_rect
  = 
 screen
@@ -3233,13 +3492,13 @@ screen
 	`get_rect
  ( )
 
-353 for 
+370 for 
 alien_column
  in 
 alien_groups
  :
 
-354 for 
+371 for 
 alien
  in 
 alien_column
@@ -3247,7 +3506,7 @@ alien_column
 	`sprites
  ( ) :
 
-355 if 
+372 if 
 alien
  . 
 rect
@@ -3259,10 +3518,10 @@ screen_rect
 bottom
  :
 
-357 
+374 
 	`ship_hit
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -3278,10 +3537,10 @@ bullets
  ) 
 	}
 
-359 def 
+376 def 
 	$update_aliens
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -3294,32 +3553,34 @@ ship
 alien_groups
  , 
 bullets
+ , 
+blockade
  ) :
 
-365 for 
+382 for 
 alien_column
  in 
 alien_groups
  :
 
-366 
+383 
 alien_column
  . 
 	`update
  ( )
 
-368 
+385 
 	`check_fleet_edges
  ( 
-ai_settings
+settings
  , 
 alien_groups
  )
 
-369 
+386 
 	`check_alien_ship_collision
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -3330,16 +3591,18 @@ sb
 ship
  ,
 
-370 
+387 
 alien_groups
  , 
 bullets
+ , 
+blockade
  )
 
-371 
+388 
 	`check_aliens_bottom
  ( 
-ai_settings
+settings
  , 
 stats
  , 
@@ -3354,10 +3617,14 @@ alien_groups
 bullets
  )
 
-372 
+389 
+	`check_alien_blockade_collision
+ ( )
+
+390 
 	`generate_alien_fire
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -3367,19 +3634,19 @@ bullets
  ) 
 	}
 
-374 def 
+392 def 
 	$define_frontline
  ( 
 alien_column
  ) :
 
-376 if 
+394 if 
 	`len
  ( 
 alien_column
  ) :
 
-377 
+395 
 	=front_line
  = 
 	`max
@@ -3395,7 +3662,7 @@ alien_column
 	`sprites
  ( ) )
 
-378 for 
+396 for 
 alien
  in 
 alien_column
@@ -3403,7 +3670,7 @@ alien_column
 	`sprites
  ( ) :
 
-379 if 
+397 if 
 alien
  . 
 row
@@ -3411,17 +3678,17 @@ row
 front_line
  :
 
-380 
+398 
 alien
  . 
 	=front_line
  = True 
 	}
 
-382 def 
+400 def 
 	$generate_alien_fire
  ( 
-ai_settings
+settings
  , 
 screen
  , 
@@ -3430,42 +3697,204 @@ alien_groups
 bullets
  ) :
 
-384 for 
+402 for 
 alien_column
  in 
 alien_groups
  :
 
-385 for 
+403 for 
 alien
  in 
 alien_column
  :
 
-386 if 
+404 if 
 alien
  . 
 front_line
  :
 
-387 if 
+405 if 
 	`randint
  ( 0 , 
-ai_settings
+settings
  . 
 alien_fire_rate
- * 1000 ) == 0 :
+ * 100 ) == 0 :
 
-388 
+406 
 	`fire_bullet_alien
  ( 
-ai_settings
+settings
  , 
 screen
  , 
 alien
  , 
 bullets
+ ) 
+	}
+
+413 def 
+	$create_defence
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
+ ) :
+
+416 
+	=rows
+ = [
+
+428 
+	=blockade_w
+ = 20 * 3
+
+429 
+	=blocks
+ = ( 
+settings
+ . 
+screen_width
+ - 2 * 
+blockade_w
+ ) / ( 
+blockade_w
+ * 3 )
+
+430 
+	=spacer
+ = ( 
+settings
+ . 
+screen_width
+ - ( 
+blocks
+ * ( 
+blockade_w
+ * 3 ) - 2 * 
+blockade_w
+ ) ) / 2
+
+432 for 
+block
+ in 
+	`range
+ ( 0 , 
+blocks
+ ) :
+
+433 
+	`create_shield
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
+ , 
+rows
+ , 
+spacer
+ +
+
+434 3 * 
+block
+ * 
+blockade_w
+ , 
+settings
+ . 
+screen_height
+ - 175 ) 
+	}
+
+436 def 
+	$create_shield
+ ( 
+settings
+ , 
+screen
+ , 
+blockade
+ , 
+rows
+ , 
+x
+ , 
+y
+ ) :
+
+438 
+	=width
+ = 
+settings
+ . 
+block_width
+
+439 
+	=height
+ = 
+settings
+ . 
+block_height
+
+442 for 
+i
+ , 
+row
+ in 
+	`enumerate
+ ( 
+rows
+ ) :
+
+443 for 
+j
+ , 
+block
+ in 
+	`enumerate
+ ( 
+row
+ ) :
+
+444 if 
+block
+ :
+
+445 
+	=block
+ = 
+	`Block
+ ( 
+settings
+ , 
+screen
+ , 
+x
+ + 
+j
+ * 
+width
+ , 
+y
+ + 
+i
+ * 
+height
+ )
+
+446 
+blockade
+ . 
+	`add
+ ( 
+block
  ) 
 	}
 
@@ -3494,7 +3923,7 @@ Ship
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  , 
@@ -3521,9 +3950,9 @@ screen
 14 
 self
  . 
-	=ai_settings
+	=settings
  = 
-ai_settings
+settings
 
 15 
 self
@@ -3624,7 +4053,7 @@ text_colour
 32 
 self
  . 
-ai_settings
+settings
  . 
 bg_colour
  )
@@ -3713,7 +4142,7 @@ text_colour
  , 
 self
  . 
-ai_settings
+settings
  . 
 bg_colour
  )
@@ -3791,7 +4220,7 @@ text_colour
  , 
 self
  . 
-ai_settings
+settings
  . 
 bg_colour
  )
@@ -3869,7 +4298,7 @@ ships_left
  ( 
 self
  . 
-ai_settings
+settings
  , 
 self
  . 
@@ -3992,7 +4421,7 @@ screen
  ( 
 self
  , 
-ai_settings
+settings
  , 
 screen
  , 
@@ -4213,7 +4642,7 @@ self
 11 
 self
  . 
-	=screen_hight
+	=screen_height
  = 800
 
 12 
@@ -4225,86 +4654,86 @@ self
 13 
 self
  . 
-	=ship_speed_factor
- = 5
-
-14 
-self
- . 
-	=ship_limit
- = 3
-
-15 
-self
- . 
 	=columns
  = 0
 
-16 
+14 
 self
  . 
 	=rows
  = 0
 
-19 
+17 
 self
  . 
-	=shim_h
- = 20
+	=ship_speed_factor
+ = 3
 
-20 
+18 
 self
  . 
-	=shim_top
- = 100
+	=ship_limit
+ = 3
 
-23 
+21 
 self
  . 
 	=bullet_speed_factor
  = 2
 
-24 
+22 
 self
  . 
 	=bullet_width
  = 3
 
-25 
+23 
 self
  . 
 	=bullet_height
  = 15
 
-26 
+24 
 self
  . 
 	=bullet_colour
  = 60 , 200 , 120
 
-27 
+25 
 self
  . 
 	=bullets_allowd
  = 3
 
-28 
+26 
 self
  . 
 	=rapidfire
  = False
 
-29 
+27 
 self
  . 
 	=powerbullets
  = False
 
-30 
+28 
 self
  . 
 	=widebullets
  = False
+
+31 
+self
+ . 
+	=shim_top
+ = 100
+
+32 
+self
+ . 
+	=shim_x
+ = 20
 
 33 
 self
@@ -4316,7 +4745,7 @@ self
 self
  . 
 	=alien_speed_factor
- = 1
+ = 0.5
 
 35 
 self
@@ -4328,77 +4757,89 @@ self
 self
  . 
 	=alien_fire_rate
- = 2
+ = 4
 
 39 
 self
  . 
 	=blockade_colour
- = 200 , 60 , 120
+ = 60 , 200 , 120
 
-42 
+40 
+self
+ . 
+	=block_width
+ = 3
+
+41 
+self
+ . 
+	=block_height
+ = 6
+
+44 
 self
  . 
 	=fleet_direction
  = 1
 
-45 
+47 
 self
  . 
 	=speedup_scale
  = 1.1
 
-48 
+50 
 self
  . 
 	=score_scale
  = 1.5
 
-50 
+52 
 self
  . 
 	`initialise_dynamic_settings
  ( ) 
 	}
 
-52 def 
+54 def 
 	$initialise_dynamic_settings
  ( 
 self
  ) :
 
-54 
-self
- . 
-	=ship_speed_factor
- = 1.5
-
-55 
-self
- . 
-	=bullet_speed_factor
- = 3
-
 56 
 self
  . 
-	=alien_speed_factor
- = 1
+	=ship_speed_factor
+ = 3
 
 57 
+self
+ . 
+	=bullet_speed_factor
+ = 4
+
+58 
+self
+ . 
+	=alien_speed_factor
+ = 0.5
+
+59 
 self
  . 
 	=alien_points
  = 50 
 	}
 
-59 def 
+61 def 
 	$increase_speed
  ( 
 self
  ) :
 
-61 
+63 
 self
  . 
 	=ship_speed_factor
@@ -4407,7 +4848,7 @@ self
  . 
 speedup_scale
 
-62 
+64 
 self
  . 
 	=bullet_speed_factor
@@ -4416,7 +4857,7 @@ self
  . 
 speedup_scale
 
-63 
+65 
 self
  . 
 	=alien_speed_factor
@@ -4425,7 +4866,7 @@ self
  . 
 speedup_scale
 
-64 
+66 
 self
  . 
 	=alien_fire_rate
@@ -4441,7 +4882,7 @@ self
 speedup_scale
  )
 
-65 
+67 
 self
  . 
 	=alien_points

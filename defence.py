@@ -1,7 +1,7 @@
 class Defence():
     """Blockade to stop the aliens."""
-    def __init__(self, ai_settings, screen):
-        self.settings = ai_settings
+    def __init__(self, settings, screen):
+        self.settings = settings
         self.screen = screen
 
         # Create a rectamgle as the basic defence.
