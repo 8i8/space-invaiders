@@ -22,12 +22,14 @@ class GameStats():
     def write_high_score(self):
         """Store highest score to file."""
         with open('.highscore', 'w') as file_object:
-            file_object.write(str(self.high_score))
+            file_object.write(str(int(self.high_score)))
+            file_object.close()
 
     def read_high_score(self):
         """Retrieve the highest score from file."""
         try:
             with open('.highscore', 'r') as file_object:
-                self.high_score = int(file_object.read())
-        except:
+                self.high_score = int(float(file_object.read()))
+        except IOError as e:
+            PRINT(e)
             pass

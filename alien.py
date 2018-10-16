@@ -1,7 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
 
-
 class Alien(Sprite):
     """Alien class, ome alien amongst the fleet."""
 
@@ -11,7 +10,7 @@ class Alien(Sprite):
         self.settings = settings
 
         # The alien image.
-        self.image = pygame.image.load('images/alien.png')
+        self.image = pygame.image.load('images/alien.png').convert_alpha()
         self.rect = self.image.get_rect()
 
         # Start each new alien in the top left of the screen.
