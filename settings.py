@@ -13,6 +13,7 @@ class Settings():
         self.columns = 0
         self.rows = 0
         self.bg_image = pygame.image.load("images/dark_city.bmp")
+        self.debug = False
 
         # Ship settings
         self.ship_speed_factor = 0

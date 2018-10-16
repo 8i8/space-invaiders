@@ -23,7 +23,8 @@ class Scoreboard():
         self.prep_high_score()
         self.prep_level()
         self.prep_ships()
-        self.prep_fire_rate(0)
+        if settings.debug:
+            self.prep_fire_rate(0)
 
     def prep_score(self):
         """Turn the score into a rendered image."""
@@ -83,6 +84,7 @@ class Scoreboard():
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
-        self.screen.blit(self.fire_rate_image, self.fire_rate_rect)
+        if self.settings.debug:
+            self.screen.blit(self.fire_rate_image, self.fire_rate_rect)
         self.ships.draw(self.screen)
 

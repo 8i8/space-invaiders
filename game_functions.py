@@ -415,7 +415,8 @@ def generate_alien_fire(settings, screen, sb, alien_groups, bullets):
     """Generate frontline alien fire."""
     # Set the scaling of the random number generation, thus the rate of enemy
     # fire.
-    sb.prep_fire_rate(settings.alien_fire_rate)
+    if settings.debug:
+        sb.prep_fire_rate(settings.alien_fire_rate)
     # Iterate over all aliens, if in the frontline, then randomly test to see
     # if the alien should fire.
     for alien_column in alien_groups:
