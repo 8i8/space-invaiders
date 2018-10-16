@@ -15,7 +15,6 @@ from block import Block
 def check_events(settings, stats, screen, sb, ship, alien_groups, bullets,
         blockade, play_button):
     """Respond to key presses and mouse events."""
-    # Watch for keyboard and mouse events.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -31,7 +30,7 @@ def check_events(settings, stats, screen, sb, ship, alien_groups, bullets,
 
 def check_keydown_events(event, settings, stats, screen, sb, ship,
         alien_groups, bullets, blockade):
-    """Respond to keypress."""
+    """Respond to keypress events."""
     if event.key == pygame.K_LEFT:
         ship.moving_left = True
     if event.key == pygame.K_RIGHT:
@@ -172,7 +171,6 @@ def check_bullet_alien_collision(settings, stats, screen, sb, ship,
 def make_new_level(settings, stats, screen, sb, ship, alien_groups, bullets):
     """Clear screen and set up next level."""
     # Destroy any existing bullets, speed up the game and create a new fleet.
-    bullets.empty()
     settings.increase_speed()
     stats.level += 1
     sb.prep_level()
@@ -188,14 +186,16 @@ def check_bullet_ship_collision(settings, stats, screen, sb, ship,
             alien_fire.add(bullet)
 
     if pygame.sprite.spritecollideany(ship, alien_fire):
-        ship_hit_bullet(settings, stats, screen, sb, ship, alien_groups, bullets, blockade)
+        ship_hit_bullet(settings, stats, screen, sb, ship, alien_groups,
+                            bullets, blockade)
 
 def check_alien_ship_collision(settings, stats, screen, sb, ship,
                                alien_groups, bullets, blockade):
     """Check for alien and ship collision."""
     for alien_column in alien_groups:
         if pygame.sprite.spritecollideany(ship, alien_column):
-            ship_hit_alien(settings, stats, screen, sb, ship, alien_groups, bullets, blockade)
+            ship_hit_alien(settings, stats, screen, sb, ship, alien_groups,
+                               bullets, blockade)
 
 def check_bullet_blockade_collision(bullets, blockade):
     """Has a shield been hit."""
@@ -213,16 +213,19 @@ def check_alien_blockade_collision(alien_groups, blockade):
 #  Ship
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def ship_hit_alien(settings, stats, screen, sb, ship, alien_groups, bullets, blockade):
+def ship_hit_alien(settings, stats, screen, sb, ship, alien_groups, bullets,
+                       blockade):
     """Respond to ship being hit by an alien."""
     # Ship lost or game over.
     stats.ships_left -= 1
     if stats.ships_left:
-        ship_lost_new_fleet(settings, screen, sb, ship, alien_groups, bullets, blockade)
+        ship_lost_new_fleet(settings, screen, sb, ship, alien_groups, bullets,
+                                blockade)
     else:
         game_over(stats)
 
-def ship_hit_bullet(settings, stats, screen, sb, ship, alien_groups, bullets, blockade):
+def ship_hit_bullet(settings, stats, screen, sb, ship, alien_groups, bullets,
+                        blockade):
     """Respond to ship being hit by an alien."""
     # Ship lost or game over.
     stats.ships_left -= 1
@@ -231,15 +234,13 @@ def ship_hit_bullet(settings, stats, screen, sb, ship, alien_groups, bullets, bl
     else:
         game_over(stats)
 
-def ship_lost_new_fleet(settings, screen, sb, ship, alien_groups, bullets, blockade):
+def ship_lost_new_fleet(settings, screen, sb, ship, alien_groups, bullets,
+                            blockade):
     """Ship lost on being hit by an alien, create a new fleet."""
     sb.prep_ships()
     for alien_column in alien_groups:
         alien_column.empty()
-    bullets.empty()
     create_fleet(settings, screen, ship, alien_groups)
-    blockade.empty()
-    create_defence(settings, screen, blockade)
     ship.center_ship()
     sleep(0.5)
 
@@ -247,8 +248,6 @@ def ship_lost(settings, screen, sb, ship, alien_groups, bullets, blockade):
     """Ship lost on being hit by an alien bullet."""
     sb.prep_ships()
     bullets.empty()
-    blockade.empty()
-    create_defence(settings, screen, blockade)
     sleep(0.5)
 
 def game_over(stats):
@@ -285,7 +284,8 @@ def fire_bullet_alien(settings, screen, alien, bullets):
     new_bullet = AlienBullet(settings, screen, alien)
     bullets.add(new_bullet)
 
-def update_bullets(settings, stats, screen, sb, ship, alien_groups, bullets, blockade):
+def update_bullets(settings, stats, screen, sb, ship, alien_groups, bullets,
+                       blockade):
     """Update position of bullets and get rid of old bullets."""
     # Update bullet positions
     bullets.update()
@@ -329,7 +329,8 @@ def create_fleet(settings, screen, ship, alien_groups):
     #for column_number in range(number_columns):
     for column_number, alien_column in enumerate(alien_groups):
         for row_number in range(number_rows):
-            create_alien(settings, screen, alien_column, column_number, row_number)
+            create_alien(settings, screen, alien_column, column_number,
+                             row_number)
 
 def get_number_columns(settings, alien_width):
     """Determine the number of aliens to fit the width."""
@@ -372,16 +373,19 @@ def change_fleet_direction(settings, alien_groups):
             alien.rect.y += settings.fleet_drop_speed
         settings.fleet_direction *= -1
 
-def check_aliens_bottom(settings, stats, screen, sb, ship, alien_groups, bullets, blockade):
+def check_aliens_bottom(settings, stats, screen, sb, ship, alien_groups,
+                            bullets, blockade):
     """Check if any aliens have reached the bottom of the screen."""
     screen_rect = screen.get_rect()
     for alien_column in alien_groups:
         for alien in alien_column.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
                 # Treat the same as the ship being hit.
-                ship_lost(settings, stats, screen, sb, ship, alien_groups, bullets, blockade)
+                ship_lost(settings, stats, screen, sb, ship, alien_groups,
+                              bullets, blockade)
 
-def update_aliens(settings, stats, screen, sb, ship, alien_groups, bullets, blockade):
+def update_aliens(settings, stats, screen, sb, ship, alien_groups, bullets,
+                      blockade):
     """
     Check if the fleet is at an edge, and then update the positions of all
     aliens in the fleet.
@@ -393,12 +397,14 @@ def update_aliens(settings, stats, screen, sb, ship, alien_groups, bullets, bloc
     check_fleet_edges(settings, alien_groups)
     check_alien_ship_collision(settings, stats, screen, sb, ship,
                                alien_groups, bullets, blockade)
-    check_aliens_bottom(settings, stats, screen, sb, ship, alien_groups, bullets, blockade)
+    check_aliens_bottom(settings, stats, screen, sb, ship, alien_groups,
+                            bullets, blockade)
     check_alien_blockade_collision(alien_groups, blockade)
     generate_alien_fire(settings, screen, sb, alien_groups, bullets)
 
 def define_frontline(alien_column):
-    """Define which aliens should fire back."""
+    """Define which aliens should fire back, tag the lowermost alien in each
+    column by getting the count of aliens and then looking for that number."""
     if len(alien_column):
         front_line = max(alien.row for alien in alien_column.sprites())
         for alien in alien_column.sprites():
@@ -407,12 +413,15 @@ def define_frontline(alien_column):
 
 def generate_alien_fire(settings, screen, sb, alien_groups, bullets):
     """Generate frontline alien fire."""
+    # Set the scaling of the random number generation, thus the rate of enemy
+    # fire.
+    sb.prep_fire_rate(settings.alien_fire_rate)
+    # Iterate over all aliens, if in the frontline, then randomly test to see
+    # if the alien should fire.
     for alien_column in alien_groups:
         for alien in alien_column:
             if alien.front_line:
-                rate = int(5000 * settings.alien_fire_rate)
-                sb.prep_fire_rate(rate)
-                if randint(0, rate) == 0:
+                if randint(0, settings.alien_fire_rate) == 0:
                     fire_bullet_alien(settings, screen, alien, bullets)
 
 

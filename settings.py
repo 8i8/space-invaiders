@@ -35,7 +35,7 @@ class Settings():
         self.alien_bullet_colour = 200, 60, 120
         self.alien_speed_factor = 0
         self.fleet_drop_speed = 10
-        self.alien_fire_rate = 0.0
+        self.alien_fire_rate = 0
         self.alien_columns_removed = 2
 
         # Blockade settings
@@ -47,7 +47,7 @@ class Settings():
         self.fleet_direction = 1
 
         # How quickly the game speeds up.
-        self.speedup_scale = 1.1
+        self.speedup_scale = 1.2
 
         # How quickly the alien point values increase.
         self.score_scale = 1.5
@@ -60,17 +60,30 @@ class Settings():
         self.ship_speed_factor = 4
         self.bullet_speed_factor = 10
         self.alien_speed_factor = 1
-        self.alien_fire_rate = 1.0
+        self.alien_fire_rate = 3000
         self.alien_points = 50
 
     def increase_speed(self):
         """Increase speed settings and alien point values."""
         self.ship_speed_factor *= self.speedup_scale
-        #self.bullet_speed_factor *= self.speedup_scale
         self.alien_speed_factor *= self.speedup_scale
-        self.alien_fire_rate *= self.alien_fire_scale
+        self.bullet_speed_factor *= 1.05
         self.alien_points *= self.score_scale
+        self.alien_fire_scaling()
 
     def increase_alien_fire(self):
-        self.alien_fire_rate *= self.alien_fire_scale
+        if self.alien_fire_rate > 250:
+            self.alien_fire_rate = int(self.alien_fire_rate * self.alien_fire_scale)
+
+    def alien_fire_scaling(self):
+        if self.alien_fire_rate > 2500:
+            self.alien_fire_rate -= 2000
+        elif self.alien_fire_rate > 1000:
+            self.alien_fire_rate -= 500
+        elif self.alien_fire_rate > 100:
+            self.alien_fire_rate -= 20
+        elif self.alien_fire_rate > 50:
+            self.alien_fire_rate -= 5
+        elif self.alien_fire_rate > 5 and self.alien_fire_rate > 1:
+            self.alien_fire_rate -= 1
 
