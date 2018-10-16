@@ -156,6 +156,7 @@ def check_bullet_alien_collision(settings, stats, screen, sb, ship,
             for alien in collisions.values():
                 stats.score += settings.alien_points * len(alien_column)
                 sb.prep_score()
+                settings.increase_alien_fire()
             check_high_score(stats, sb)
 
         # Define the front line for alien fire.
@@ -394,7 +395,7 @@ def update_aliens(settings, stats, screen, sb, ship, alien_groups, bullets, bloc
                                alien_groups, bullets, blockade)
     check_aliens_bottom(settings, stats, screen, sb, ship, alien_groups, bullets, blockade)
     check_alien_blockade_collision(alien_groups, blockade)
-    generate_alien_fire(settings, screen, alien_groups, bullets)
+    generate_alien_fire(settings, screen, sb, alien_groups, bullets)
 
 def define_frontline(alien_column):
     """Define which aliens should fire back."""
@@ -404,12 +405,14 @@ def define_frontline(alien_column):
             if alien.row == front_line:
                 alien.front_line = True
 
-def generate_alien_fire(settings, screen, alien_groups, bullets):
+def generate_alien_fire(settings, screen, sb, alien_groups, bullets):
     """Generate frontline alien fire."""
     for alien_column in alien_groups:
         for alien in alien_column:
             if alien.front_line:
-                if randint(0, int(40000 / settings.alien_fire_rate)) == 0:
+                rate = int(5000 * settings.alien_fire_rate)
+                sb.prep_fire_rate(rate)
+                if randint(0, rate) == 0:
                     fire_bullet_alien(settings, screen, alien, bullets)
 
 

@@ -23,6 +23,7 @@ class Scoreboard():
         self.prep_high_score()
         self.prep_level()
         self.prep_ships()
+        self.prep_fire_rate(0)
 
     def prep_score(self):
         """Turn the score into a rendered image."""
@@ -66,10 +67,22 @@ class Scoreboard():
             ship.rect.y = 10
             self.ships.add(ship)
 
+    def prep_fire_rate(self, rate):
+        """debug fire rate"""
+        self.fire_rate = rate
+        self.fire_rate_str = "{:,}".format(rate)
+        self.fire_rate_image = self.font.render(self.fire_rate_str, True,
+                self.text_colour)
+
+        self.fire_rate_rect = self.level_image.get_rect()
+        self.fire_rate_rect.left = self.screen_rect.left + 10
+        self.fire_rate_rect.bottom = self.screen_rect.bottom - 10
+
     def show_score(self):
         """Draw scores and level count to the screen."""
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        self.screen.blit(self.fire_rate_image, self.fire_rate_rect)
         self.ships.draw(self.screen)
 

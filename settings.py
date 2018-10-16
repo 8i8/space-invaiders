@@ -35,7 +35,7 @@ class Settings():
         self.alien_bullet_colour = 200, 60, 120
         self.alien_speed_factor = 0
         self.fleet_drop_speed = 10
-        self.alien_fire_rate = 0
+        self.alien_fire_rate = 0.0
         self.alien_columns_removed = 2
 
         # Blockade settings
@@ -51,7 +51,7 @@ class Settings():
 
         # How quickly the alien point values increase.
         self.score_scale = 1.5
-        self.alien_fire_scale = 1.1
+        self.alien_fire_scale = 0.98
 
         self.initialise_dynamic_settings()
 
@@ -60,14 +60,17 @@ class Settings():
         self.ship_speed_factor = 4
         self.bullet_speed_factor = 10
         self.alien_speed_factor = 1
-        self.alien_fire_rate = 4
+        self.alien_fire_rate = 1.0
         self.alien_points = 50
 
     def increase_speed(self):
         """Increase speed settings and alien point values."""
         self.ship_speed_factor *= self.speedup_scale
-        self.bullet_speed_factor *= self.speedup_scale
+        #self.bullet_speed_factor *= self.speedup_scale
         self.alien_speed_factor *= self.speedup_scale
-        self.alien_fire_rate *= self.alien_fire_rate
+        self.alien_fire_rate *= self.alien_fire_scale
         self.alien_points *= self.score_scale
+
+    def increase_alien_fire(self):
+        self.alien_fire_rate *= self.alien_fire_scale
 
