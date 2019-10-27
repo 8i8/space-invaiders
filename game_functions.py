@@ -1,3 +1,4 @@
+"""The games principle procedural functions file."""
 import sys
 import pygame
 from pygame.sprite import Group
@@ -115,8 +116,7 @@ def start_game(settings, stats, screen, sb, ship, alien_groups, bullets,
     pygame.mouse.set_visible(False)
 
 def prep_images(sb):
-    """Generate all required text renders for new game."""
-    # Reset scoreboard images.
+    """Generate image renders of text and numeric values, score, level etc."""
     sb.prep_score()
     sb.prep_high_score()
     sb.prep_level()
@@ -446,7 +446,7 @@ def create_defence(settings, screen, blockade):
         (1,1,1,0,0,0,0,0,1,1,1)]
 
     blockade_w = len(rows[0]) * settings.block_width
-    blocks = (settings.screen_width - 2 * blockade_w) / (blockade_w * 3)
+    blocks = int((settings.screen_width - 2 * blockade_w) / (blockade_w * 3))
     spacer = (settings.screen_width - (blocks * (blockade_w * 3) - 2 * blockade_w)) / 2
 
     for block in range(0,blocks):

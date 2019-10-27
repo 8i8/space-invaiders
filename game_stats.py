@@ -30,6 +30,6 @@ class GameStats():
         try:
             with open('.highscore', 'r') as file_object:
                 self.high_score = int(float(file_object.read()))
+                file_object.close()
         except IOError as e:
-            PRINT(e)
-            pass
+            print("File error: " + str(e))

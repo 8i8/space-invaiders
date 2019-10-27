@@ -8,11 +8,13 @@ from button import Button
 from ship import Ship
 from alien import Alien
 
-import game_functions as gf
+import game_functions as gf # The principle functions that run the game.
 
 def run_game():
     # Initialise pygame, settings and screen object.
     pygame.init()
+    # Initialise the games start state includes screen dimensions for the
+    # pygame display.
     settings = Settings()
     screen = pygame.display.set_mode(
             (settings.screen_width, settings.screen_height))
@@ -23,7 +25,7 @@ def run_game():
     stats = GameStats(settings)
     sb = Scoreboard(settings, screen, stats)
 
-    # Make a ship a group of bullets and a group of aliens.
+    # Make a ship, a group of bullets and a swarm of aliens.
     ship = Ship(settings, screen)
     bullets = Group()
     blockade = Group()
@@ -34,7 +36,7 @@ def run_game():
     gf.create_fleet(settings, screen, ship, alien_groups)
     gf.create_defence(settings, screen, blockade)
 
-    # Start the main loop of the game.
+    # Start the main game loop.
     while True:
         gf.check_events(settings, stats, screen, sb, ship, alien_groups,
                             bullets, blockade, play_button)

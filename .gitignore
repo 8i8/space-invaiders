@@ -4,3 +4,5 @@ highscore
 *.pyc
 cscope*
 .projectile
+env
+run
