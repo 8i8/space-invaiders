@@ -13,6 +13,7 @@ import game_functions as gf # The principle functions that run the game.
 def run_game():
     # Initialise pygame, settings and screen object.
     pygame.init()
+    clock = pygame.time.Clock()
     # Initialise the games start state includes screen dimensions for the
     # pygame display.
     settings = Settings()
@@ -38,6 +39,7 @@ def run_game():
 
     # Start the main game loop.
     while True:
+        clock.tick(60)
         gf.check_events(settings, stats, screen, sb, ship, alien_groups,
                             bullets, blockade, play_button)
 
@@ -50,4 +52,5 @@ def run_game():
 
         gf.update_screen(settings, stats, screen, sb, ship, alien_groups,
                              bullets, blockade, play_button)
+
 run_game()

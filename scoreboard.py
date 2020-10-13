@@ -3,7 +3,6 @@ from pygame.sprite import Group
 
 from ship import Ship
 
-
 class Scoreboard():
     """A class to report scoring information."""
 
